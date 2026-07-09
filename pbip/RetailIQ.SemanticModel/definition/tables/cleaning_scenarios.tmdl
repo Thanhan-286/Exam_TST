@@ -1,0 +1,50 @@
+table cleaning_scenarios
+	lineageTag: 9dafe82f-2bf9-4768-94f2-811978b41d95
+
+	measure 'Bias No Cleaning' = CALCULATE ( SUM ( cleaning_scenarios[bias_pct] ), cleaning_scenarios[scenario_order] = 2 )
+		formatString: +0.00"%";-0.00"%"
+		lineageTag: e00c992e-4423-4056-95e8-30e930d90941
+
+	measure 'Bias Bad Dedupe' = CALCULATE ( SUM ( cleaning_scenarios[bias_pct] ), cleaning_scenarios[scenario_order] = 3 )
+		formatString: +0.00"%";-0.00"%"
+		lineageTag: ec20e20e-e45a-4ab0-a961-d3faab0dd6fb
+
+	column scenario_order
+		dataType: int64
+		lineageTag: c66a1cd2-f7d4-407d-a73e-c3abdf9ae55c
+		summarizeBy: none
+		sourceColumn: scenario_order
+
+	column scenario
+		dataType: string
+		lineageTag: 06340b3e-c7a0-4907-ba1a-d736337f2523
+		summarizeBy: none
+		sourceColumn: scenario
+
+	column revenue_net
+		dataType: decimal
+		lineageTag: d1523548-ff33-479c-a4fa-4cbd01dabb96
+		summarizeBy: none
+		sourceColumn: revenue_net
+
+	column bias_pct
+		dataType: decimal
+		lineageTag: ab873bfb-1ce0-4b5a-8ed3-24dc67aa90fd
+		summarizeBy: none
+		sourceColumn: bias_pct
+
+	column is_correct
+		dataType: boolean
+		lineageTag: 157c3513-581f-4489-95a0-768bcb61f04e
+		summarizeBy: none
+		sourceColumn: is_correct
+
+	partition cleaning_scenarios = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="cleaning_scenarios"]}[Data]
+				in
+				    data
+

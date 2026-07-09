@@ -1,0 +1,71 @@
+table dim_product
+	lineageTag: 8b07d52d-47d2-4dc4-ad85-5dadaa5ee7e1
+
+	column item_code
+		dataType: string
+		isHidden
+		lineageTag: e975a40c-661a-4c2c-a5b3-a4619a059ffe
+		summarizeBy: none
+		sourceColumn: item_code
+
+	column item_name
+		dataType: string
+		lineageTag: 9b63f4a5-b85a-4280-a893-ac1ca9f80a37
+		summarizeBy: none
+		sourceColumn: item_name
+
+	column category_code
+		dataType: string
+		isHidden
+		lineageTag: b7e00314-765d-40f5-83b1-e582837b98e3
+		summarizeBy: none
+		sourceColumn: category_code
+
+	column category_name
+		dataType: string
+		isHidden
+		lineageTag: 36a6a549-fdaa-4974-9c55-ec5ac9e7ad6d
+		summarizeBy: none
+		sourceColumn: category_name
+
+	column standard_cost
+		dataType: decimal
+		isHidden
+		lineageTag: d560e6c4-4524-4971-a529-51ecf49fca9c
+		summarizeBy: none
+		sourceColumn: standard_cost
+
+	column list_price
+		dataType: decimal
+		lineageTag: 9935a436-b834-4d4f-8703-5846012b1f1d
+		summarizeBy: none
+		sourceColumn: list_price
+
+	column item_status
+		dataType: string
+		lineageTag: 1cfd002f-8e13-4385-8dc8-263308097e28
+		summarizeBy: none
+		sourceColumn: item_status
+
+	column abc_class
+		dataType: string
+		lineageTag: 352e1049-895c-46cb-9f1d-ba57a1728b8f
+		summarizeBy: none
+		sourceColumn: abc_class
+
+	column launch_date
+		dataType: dateTime
+		isHidden
+		lineageTag: 682e97ce-a142-435b-9b94-8520395d067a
+		summarizeBy: none
+		sourceColumn: launch_date
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="dim_product"]}[Data]
+				in
+				    data
+

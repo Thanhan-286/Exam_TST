@@ -1,0 +1,60 @@
+table audit_issues
+	lineageTag: b97f751f-83c1-4e2e-83ff-914fe208cbc9
+
+	column issue_no
+		dataType: int64
+		lineageTag: 266263d8-6e9d-4ee1-8ad0-df4d9adad34e
+		summarizeBy: none
+		sourceColumn: issue_no
+
+	column in_hint
+		dataType: boolean
+		lineageTag: 569ce702-f02f-4c9e-bb5b-6a8879635bb4
+		summarizeBy: none
+		sourceColumn: in_hint
+
+	column issue
+		dataType: string
+		lineageTag: 523f7575-9126-4761-a3f5-6492bd5327f9
+		summarizeBy: none
+		sourceColumn: issue
+
+	column source_table
+		dataType: string
+		lineageTag: 18b902a6-d658-409f-b5eb-04009f51d0b6
+		summarizeBy: none
+		sourceColumn: source_table
+
+	column rows_affected
+		dataType: string
+		lineageTag: 62dacb60-b14a-4331-9f1e-1204fbbabf16
+		summarizeBy: none
+		sourceColumn: rows_affected
+
+	column money_impact
+		dataType: string
+		lineageTag: 231c953c-3f97-41c7-b2c4-eef953834376
+		summarizeBy: none
+		sourceColumn: money_impact
+
+	column resolution
+		dataType: string
+		lineageTag: b1313ffa-e728-415f-b151-5bab62a85505
+		summarizeBy: none
+		sourceColumn: resolution
+
+	column future_rule
+		dataType: string
+		lineageTag: 19290b28-a516-467a-b538-845709dc0098
+		summarizeBy: none
+		sourceColumn: future_rule
+
+	partition audit_issues = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="audit_issues"]}[Data]
+				in
+				    data
+

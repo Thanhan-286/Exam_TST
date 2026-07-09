@@ -1,0 +1,187 @@
+table dq_fact_sales
+	lineageTag: ada1331d-be17-4bfc-9bff-90f2b2ea90d8
+
+	measure 'DQ Score SO' = DIVIDE ( COUNTROWS ( dq_fact_sales ) - CALCULATE ( COUNTROWS ( dq_fact_sales ), dq_fact_sales[flag_dq_dirty] = TRUE ), COUNTROWS ( dq_fact_sales ) )
+		formatString: 0.00%
+		lineageTag: 39092978-eee3-4148-8b3c-0c52b5b267e9
+
+	measure 'PV Score' = DIVIDE ( CALCULATE ( COUNTROWS ( dq_fact_sales ), dq_fact_sales[flag_process_violation] = TRUE ), COUNTROWS ( dq_fact_sales ) )
+		formatString: 0.00%
+		lineageTag: 963d3c03-f4c9-4bfe-a9d6-1dbb9ce17a11
+
+	column sales_sk
+		dataType: int64
+		isHidden
+		lineageTag: 7a51066f-feed-4735-ad84-cbeeb54dd4da
+		summarizeBy: none
+		sourceColumn: sales_sk
+
+	column src_row_index
+		dataType: int64
+		lineageTag: 2cf72fd0-5667-4d52-9d38-d1f97ad77f6b
+		summarizeBy: none
+		sourceColumn: src_row_index
+
+	column doc_date
+		dataType: dateTime
+		lineageTag: 28b19e02-d6c8-4b73-8996-2e2bdcaa11db
+		summarizeBy: none
+		sourceColumn: doc_date
+
+	column month_start
+		dataType: dateTime
+		isHidden
+		lineageTag: 7bc1ec15-cd07-42ff-a0fd-67e03eeb9620
+		summarizeBy: none
+		sourceColumn: month_start
+
+	column order_no
+		dataType: string
+		lineageTag: 1ade6fca-c6c2-41c5-b12f-a03ef739cb8c
+		summarizeBy: none
+		sourceColumn: order_no
+
+	column line_no
+		dataType: int64
+		lineageTag: ce9c927e-23f9-4dfc-8cdb-90beba13c33f
+		summarizeBy: none
+		sourceColumn: line_no
+
+	column customer_code
+		dataType: string
+		isHidden
+		lineageTag: 4f2b891c-9aa3-4016-928f-8fef09bb39a0
+		summarizeBy: none
+		sourceColumn: customer_code
+
+	column item_code
+		dataType: string
+		isHidden
+		lineageTag: 5b13d2ff-d8ef-44c4-b7e1-7c49947b0997
+		summarizeBy: none
+		sourceColumn: item_code
+
+	column warehouse_code
+		dataType: string
+		isHidden
+		lineageTag: 0197a22b-cc4b-4255-961f-a392980fccbe
+		summarizeBy: none
+		sourceColumn: warehouse_code
+
+	column qty_order
+		dataType: decimal
+		lineageTag: 1d5264da-80f4-4a7d-85b3-f6e612ea9669
+		summarizeBy: none
+		sourceColumn: qty_order
+
+	column qty_delivered
+		dataType: decimal
+		lineageTag: 9567844a-12af-448e-89f9-5ba3c0132fd1
+		summarizeBy: none
+		sourceColumn: qty_delivered
+
+	column unit_price
+		dataType: decimal
+		lineageTag: b6adfc5e-db02-4704-98c3-a31580370b56
+		summarizeBy: none
+		sourceColumn: unit_price
+
+	column discount_pct
+		dataType: decimal
+		lineageTag: ba5b7b67-7c18-4af4-bf82-f82888e8904c
+		summarizeBy: none
+		sourceColumn: discount_pct
+
+	column doc_status
+		dataType: string
+		lineageTag: 4a1db211-d275-4cea-baea-50c2d6887970
+		summarizeBy: none
+		sourceColumn: doc_status
+
+	column salesperson
+		dataType: string
+		lineageTag: 56779356-7d40-4fdb-95d3-d38be64e912c
+		summarizeBy: none
+		sourceColumn: salesperson
+
+	column flag_dup_row
+		dataType: boolean
+		lineageTag: 864272aa-18cd-4dbe-9707-b1f9b53b3a85
+		summarizeBy: none
+		sourceColumn: flag_dup_row
+
+	column flag_orphan_fk
+		dataType: boolean
+		lineageTag: c48a3085-6461-4990-a6f3-1c520cf11c46
+		summarizeBy: none
+		sourceColumn: flag_orphan_fk
+
+	column flag_zero_price
+		dataType: boolean
+		lineageTag: f78cbff4-f7c7-44a8-8b2e-a7569e21a867
+		summarizeBy: none
+		sourceColumn: flag_zero_price
+
+	column flag_high_discount
+		dataType: boolean
+		lineageTag: a40ba0ff-b91e-4fd2-a659-92a83073c8ca
+		summarizeBy: none
+		sourceColumn: flag_high_discount
+
+	column flag_sentinel
+		dataType: boolean
+		lineageTag: 71637571-114b-4ceb-a89e-6bd344f98d60
+		summarizeBy: none
+		sourceColumn: flag_sentinel
+
+	column flag_dq_dirty
+		dataType: boolean
+		lineageTag: 9575cb57-b731-40b8-ad13-5dcd75688690
+		summarizeBy: none
+		sourceColumn: flag_dq_dirty
+
+	column flag_pv_discontinued_item
+		dataType: boolean
+		lineageTag: cbdeaebe-1b34-4485-a573-0bfd05d810c9
+		summarizeBy: none
+		sourceColumn: flag_pv_discontinued_item
+
+	column flag_pv_inactive_customer
+		dataType: boolean
+		lineageTag: ee6e0662-8ea5-42b8-a3cb-59c8418ded17
+		summarizeBy: none
+		sourceColumn: flag_pv_inactive_customer
+
+	column flag_pv_inactive_warehouse
+		dataType: boolean
+		lineageTag: 3cfa7480-ba21-414f-8d88-80fcb80242c7
+		summarizeBy: none
+		sourceColumn: flag_pv_inactive_warehouse
+
+	column flag_process_violation
+		dataType: boolean
+		lineageTag: 28885b66-a9e4-499e-98f5-94d8507a4299
+		summarizeBy: none
+		sourceColumn: flag_process_violation
+
+	column dq_issue
+		dataType: string
+		lineageTag: 33715117-e9e9-4723-9c0f-f2a3d83cd122
+		summarizeBy: none
+		sourceColumn: dq_issue
+
+	column pv_issue
+		dataType: string
+		lineageTag: 6f323158-ef96-4288-b6ed-50ebc49300e8
+		summarizeBy: none
+		sourceColumn: pv_issue
+
+	partition dq_fact_sales = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="dq_fact_sales"]}[Data]
+				in
+				    data
+

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;-webkit-font-smoothing:antialiased;background:#DDE6DD}
+  a{color:#5F7D1F;text-decoration:none}
+  a:hover{color:#43521c}
+  ::-webkit-scrollbar{width:9px;height:9px}
+  ::-webkit-scrollbar-thumb{background:#c6d2c6;border-radius:9px}
+  .rq-row:hover{background:#F6FAF3 !important}
+</style>
+</helmet>
+
+<div style="min-height:100vh;padding:22px;display:flex;flex-direction:column;align-items:center;gap:14px">
+
+  <!-- nav tabs (outside canvas) -->
+  <div style="width:1280px;display:flex;align-items:center;gap:8px">
+    <span style="font-weight:800;font-size:15px;color:#1B201B;margin-right:6px;letter-spacing:-.3px">RetailIQ</span>
+    <button onClick="{{ go1 }}" style="{{ tab1 }}">1 · Executive Sales</button>
+    <button onClick="{{ go2 }}" style="{{ tab2 }}">2 · Inventory &amp; Slow-Moving</button>
+    <button onClick="{{ go3 }}" style="{{ tab3 }}">3 · Data Quality</button>
+    <span style="margin-left:auto;font-size:11px;color:#8A938B;font-weight:600">Canvas {{ canvasLabel }}</span>
+  </div>
+
+  <!-- ============ CANVAS ============ -->
+  <div style="{{ canvasStyle }}">
+
+    <!-- ================= DB1 ================= -->
+    <sc-if value="{{ is1 }}" hint-placeholder-val="{{ true }}">
+    <div style="height:100%;display:flex;flex-direction:column;padding:22px 24px 16px;gap:12px">
+      <!-- title + slicers -->
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:18px;font-weight:800;color:#1B201B;letter-spacing:-.3px">Executive Sales <span style="font-size:12px;font-weight:600;color:#8A938B">· 01–06/2026</span></div>
+        <div style="display:flex;gap:8px">
+          <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #E7ECE3;border-radius:8px;padding:6px 11px;font-size:11px;font-weight:600;color:#4A544A">Month: <b style="color:#1B201B">All</b> ▾</div>
+          <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #E7ECE3;border-radius:8px;padding:6px 11px;font-size:11px;font-weight:600;color:#4A544A">Region <span style="color:#8A938B">(customer)</span>: <b style="color:#1B201B">All</b> ▾</div>
+          <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #E7ECE3;border-radius:8px;padding:6px 11px;font-size:11px;font-weight:600;color:#4A544A">Channel: <b style="color:#1B201B">All</b> ▾</div>
+        </div>
+      </div>
+
+      <!-- KPI row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr) 0.9fr;gap:12px">
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 14px"><div style="font-size:11.5px;color:#8A938B;font-weight:600">Revenue Net</div><div style="font-size:25px;font-weight:800;color:#1B201B;margin-top:6px">5,21 tỷ</div><div style="font-size:10.5px;color:#8A938B;margin-top:5px">5.208.670.650 ₫</div></div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 14px"><div style="font-size:11.5px;color:#8A938B;font-weight:600">Gross Margin</div><div style="font-size:25px;font-weight:800;color:#1B201B;margin-top:6px">888,4 tr</div><div style="font-size:10.5px;color:#4A544A;margin-top:5px">GM% <b>17,18%</b></div></div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 14px"><div style="font-size:11.5px;color:#8A938B;font-weight:600">Fill Rate</div><div style="font-size:25px;font-weight:800;color:#1B201B;margin-top:6px">87,21%</div><div style="font-size:10.5px;color:#8A938B;margin-top:5px">Completed + Open</div></div>
+        <div style="background:#EEF7DC;border:1px solid #DFEEBE;border-radius:10px;padding:12px 14px"><div style="font-size:11.5px;color:#6F7A5C;font-weight:600">Achievement Index</div><div style="font-size:25px;font-weight:800;color:#33401A;margin-top:6px">100 <span style="font-size:12px;font-weight:600;color:#6F7A5C">= TB</span></div><div style="font-size:10.5px;color:#8A9370;margin-top:5px">tooltip: % plan = 6,07%</div></div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center;gap:7px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:10.5px;color:#8A938B;font-weight:600">On-time Del.</span><b style="font-size:15px;color:#D96A6A">37,27%</b></div>
+          <div style="height:1px;background:#EEF1EC"></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:10.5px;color:#8A938B;font-weight:600">Return Rate</span><b style="font-size:15px;color:#1B201B">2,24%</b></div>
+        </div>
+      </div>
+
+      <!-- combo month -->
+      <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px 6px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13.5px;font-weight:700;color:#1B201B">Revenue Net by Month <span style="font-weight:500;color:#8A938B">· column</span> &amp; Achievement Index <span style="font-weight:500;color:#8A938B">· line (axis 0–200)</span></div>
+          <div style="display:flex;gap:12px;font-size:10.5px;color:#6b746b"><span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#7FAE3E"></span>Revenue Net</span><span style="display:flex;align-items:center;gap:5px"><span style="width:12px;height:0;border-top:2px solid #5F7D1F"></span>Index</span><span style="display:flex;align-items:center;gap:5px"><span style="width:12px;height:0;border-top:2px dashed #b6bfb0"></span>Index=100</span></div>
+        </div>
+        <svg viewBox="0 0 1180 158" style="width:100%;height:150px" preserveAspectRatio="none">
+          <g stroke="#EEF1EC" stroke-width="1"><line x1="44" y1="12" x2="1150" y2="12"/><line x1="44" y1="44" x2="1150" y2="44"/><line x1="44" y1="76" x2="1150" y2="76"/><line x1="44" y1="108" x2="1150" y2="108"/><line x1="44" y1="140" x2="1150" y2="140"/></g>
+          <g fill="#AEB6AE" font-size="9"><text x="6" y="16">1,6 tỷ</text><text x="6" y="80">0,8 tỷ</text><text x="14" y="144">0</text></g>
+          <g fill="#AEB6AE" font-size="9" text-anchor="end"><text x="1176" y="16">200</text><text x="1176" y="80">100</text><text x="1176" y="144">0</text></g>
+          <line x1="44" y1="76" x2="1150" y2="76" stroke="#b6bfb0" stroke-width="1.4" stroke-dasharray="5 4"/>
+          <g>
+            <rect x="88" y="88" width="92" height="52" rx="3" fill="#7FAE3E"/>
+            <rect x="272" y="98" width="92" height="42" rx="3" fill="#7FAE3E"/>
+            <rect x="456" y="67" width="92" height="73" rx="3" fill="#7FAE3E"/>
+            <rect x="640" y="84" width="92" height="56" rx="3" fill="#7FAE3E"/>
+            <rect x="824" y="17" width="92" height="123" rx="3" fill="#A9CF6B"/>
+            <rect x="1008" y="62" width="92" height="78" rx="3" fill="#7FAE3E"/>
+          </g>
+          <polyline points="134,93 318,100 502,71 686,94 870,29 1054,71" fill="none" stroke="#5F7D1F" stroke-width="2.4" stroke-linejoin="round"/>
+          <g fill="#5F7D1F"><circle cx="134" cy="93" r="3.4"/><circle cx="318" cy="100" r="3.4"/><circle cx="502" cy="71" r="3.4"/><circle cx="686" cy="94" r="3.4"/><circle cx="870" cy="29" r="3.4"/><circle cx="1054" cy="71" r="3.4"/></g>
+          <g fill="#4A544A" font-size="9.5" text-anchor="middle" font-weight="600"><text x="134" y="80">643tr</text><text x="318" y="90">515tr</text><text x="502" y="59">895tr</text><text x="686" y="76">688tr</text><text x="870" y="9">1.512tr</text><text x="1054" y="54">956tr</text></g>
+          <g fill="#8A938B" font-size="10" text-anchor="middle"><text x="134" y="154">Jan</text><text x="318" y="154">Feb</text><text x="502" y="154">Mar</text><text x="686" y="154">Apr</text><text x="870" y="154">May</text><text x="1054" y="154">Jun</text></g>
+        </svg>
+      </div>
+
+      <!-- two bars -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+          <div style="font-size:13px;font-weight:700;color:#1B201B;margin-bottom:9px">Revenue Net by Region <span style="font-weight:500;color:#8A938B">· label = Index</span></div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:78px;font-size:11px;color:#4A544A">Miền Bắc</span><div style="flex:1;height:15px;background:#F1F4EE;border-radius:3px"><div style="width:100%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:10.5px;font-weight:700;color:#3F9A5A;width:44px;text-align:right">Idx 125</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:78px;font-size:11px;color:#4A544A">Miền Nam</span><div style="flex:1;height:15px;background:#F1F4EE;border-radius:3px"><div style="width:92%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:10.5px;font-weight:700;color:#4A544A;width:44px;text-align:right">Idx 99</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:78px;font-size:11px;color:#4A544A">Miền Trung</span><div style="flex:1;height:15px;background:#F1F4EE;border-radius:3px"><div style="width:73%;height:100%;background:#E6B45A;border-radius:3px"></div></div><span style="font-size:10.5px;font-weight:700;color:#D96A6A;width:44px;text-align:right">Idx 79</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:78px;font-size:11px;color:#8A938B">(Unknown)</span><div style="flex:1;height:15px;background:#F1F4EE;border-radius:3px"><div style="width:2%;height:100%;background:#B6BFB0;border-radius:3px"></div></div><span style="font-size:10.5px;font-weight:600;color:#8A938B;width:44px;text-align:right">—</span></div>
+          </div>
+          <div style="font-size:10px;color:#8A938B;margin-top:8px">Miền Bắc 1,95 tỷ · Nam 1,79 tỷ · Trung 1,43 tỷ · Unknown 37,7tr</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><div style="font-size:13px;font-weight:700;color:#1B201B">Revenue Net by Category</div><span style="font-size:9.5px;color:#8A938B;white-space:nowrap">color = GM% · low ▸ high</span></div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:82px;font-size:10.5px;color:#4A544A">Dầu nhớt</span><div style="flex:1;height:14px;background:#F1F4EE;border-radius:3px"><div style="width:100%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:10px;font-weight:700;color:#4A544A;width:38px;text-align:right">18,9%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:82px;font-size:10.5px;color:#4A544A">Ắc quy</span><div style="flex:1;height:14px;background:#F1F4EE;border-radius:3px"><div style="width:93%;height:100%;background:#E6B45A;border-radius:3px"></div></div><span style="font-size:10px;font-weight:700;color:#4A544A;width:38px;text-align:right">14,2%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:82px;font-size:10.5px;color:#4A544A">Hóa chất</span><div style="flex:1;height:14px;background:#F1F4EE;border-radius:3px"><div style="width:89%;height:100%;background:#5F7D1F;border-radius:3px"></div></div><span style="font-size:10px;font-weight:700;color:#4A544A;width:38px;text-align:right">21,6%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:82px;font-size:10.5px;color:#4A544A">PT thân vỏ</span><div style="flex:1;height:14px;background:#F1F4EE;border-radius:3px"><div style="width:76%;height:100%;background:#C9D98A;border-radius:3px"></div></div><span style="font-size:10px;font-weight:700;color:#4A544A;width:38px;text-align:right">16,7%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:82px;font-size:10.5px;color:#4A544A">Lốp</span><div style="flex:1;height:14px;background:#F1F4EE;border-radius:3px"><div style="width:70%;height:100%;background:#D96A6A;border-radius:3px"></div></div><span style="font-size:10px;font-weight:700;color:#D96A6A;width:38px;text-align:right">11,8%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:82px;font-size:10.5px;color:#4A544A">PT nhanh</span><div style="flex:1;height:14px;background:#F1F4EE;border-radius:3px"><div style="width:54%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:10px;font-weight:700;color:#4A544A;width:38px;text-align:right">19,7%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- top/bottom table -->
+      <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:11px 16px;flex:1;min-height:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+          <div style="font-size:13px;font-weight:700;color:#1B201B">Top 5 Products <span style="font-weight:500;color:#8A938B">· by Gross Profit</span></div>
+          <div style="display:flex;background:#F3F6EF;border-radius:7px;padding:2px"><span style="font-size:10.5px;font-weight:700;color:#33401A;background:#CDEA52;padding:3px 10px;border-radius:5px">Top 5</span><span style="font-size:10.5px;font-weight:600;color:#8A938B;padding:3px 10px">Bottom 5</span></div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead><tr style="color:#A7B0A7;font-size:9.5px;text-transform:uppercase;letter-spacing:.4px;text-align:left"><th style="font-weight:700;padding:4px">Item</th><th style="font-weight:700;padding:4px">Category</th><th style="font-weight:700;padding:4px;text-align:right">Revenue</th><th style="font-weight:700;padding:4px;text-align:right">Gross Profit</th><th style="font-weight:700;padding:4px;text-align:right">GM%</th></tr></thead>
+          <tbody>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:5px 4px;font-weight:600;color:#1B201B">VT025 Dầu nhớt 25</td><td style="padding:5px 4px;color:#8A938B">Dầu nhớt</td><td style="padding:5px 4px;text-align:right">410,9tr</td><td style="padding:5px 4px;text-align:right;font-weight:700">83,3tr</td><td style="padding:5px 4px;text-align:right;color:#4A544A">20%</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:5px 4px;font-weight:600;color:#1B201B">VT006 Hóa chất 06</td><td style="padding:5px 4px;color:#8A938B">Hóa chất</td><td style="padding:5px 4px;text-align:right">330,2tr</td><td style="padding:5px 4px;text-align:right;font-weight:700">71,0tr</td><td style="padding:5px 4px;text-align:right;color:#4A544A">22%</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:5px 4px;font-weight:600;color:#1B201B">VT008 Ắc quy 08</td><td style="padding:5px 4px;color:#8A938B">Ắc quy</td><td style="padding:5px 4px;text-align:right">483,1tr</td><td style="padding:5px 4px;text-align:right;font-weight:700">65,5tr</td><td style="padding:5px 4px;text-align:right;color:#4A544A">14%</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF;background:#FBF1E3"><td style="padding:5px 4px;font-weight:600;color:#1B201B">VT023 PT thân vỏ 23 <span style="font-size:9px;color:#B0731A;font-weight:700">◆ Slow-Heavy</span></td><td style="padding:5px 4px;color:#8A938B">Thân vỏ</td><td style="padding:5px 4px;text-align:right">363,4tr</td><td style="padding:5px 4px;text-align:right;font-weight:700">57,4tr</td><td style="padding:5px 4px;text-align:right;color:#4A544A">16%</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:5px 4px;font-weight:600;color:#1B201B">VT031 Dầu nhớt 31</td><td style="padding:5px 4px;color:#8A938B">Dầu nhớt</td><td style="padding:5px 4px;text-align:right">308,8tr</td><td style="padding:5px 4px;text-align:right;font-weight:700">55,6tr</td><td style="padding:5px 4px;text-align:right;color:#4A544A">18%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- footnote -->
+      <div style="font-size:9px;color:#8A938B;line-height:1.5">
+        Region = vùng <b>KHÁCH HÀNG</b> (DB2 dùng vùng KHO — khác nhau). · Achievement Index = tỷ lệ đạt kế hoạch chuẩn hóa, 100 = mặt bằng chung (6,07%); chỉ đọc ở cấp vùng/nhóm/tháng, KHÔNG đọc ở từng ô (~3,7 đơn/ô). · Kênh Nội bộ (24,5% DT) ĐƯỢC tính vào Revenue Net. · Plan &amp; fact không cùng phạm vi (fact ≈ mẫu 6%). · Đã loại 1 dòng trùng + 1 dòng Qty=900; VT999 không có COGS ⇒ loại khỏi GM.
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ================= DB2 ================= -->
+    <sc-if value="{{ is2 }}" hint-placeholder-val="{{ true }}">
+    <div style="height:100%;display:flex;flex-direction:column;padding:22px 24px 14px;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:18px;font-weight:800;color:#1B201B;letter-spacing:-.3px">Inventory &amp; Slow-Moving <span style="font-size:12px;font-weight:600;color:#8A938B">· EOM 30/06/2026</span></div>
+        <div style="display:flex;gap:7px">
+          <div style="background:#fff;border:1px solid #E7ECE3;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:600;color:#4A544A">Kho: <b style="color:#1B201B">All</b> ▾</div>
+          <div style="background:#fff;border:1px solid #E7ECE3;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:600;color:#4A544A">Category ▾</div>
+          <div style="background:#fff;border:1px solid #E7ECE3;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:600;color:#4A544A">ABC ▾</div>
+          <div style="background:#fff;border:1px solid #E7ECE3;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:600;color:#4A544A">Status ▾</div>
+        </div>
+      </div>
+
+      <!-- KPI row -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:11px 13px"><div style="font-size:11px;color:#8A938B;font-weight:600">Tổng giá trị tồn</div><div style="font-size:22px;font-weight:800;color:#1B201B;margin-top:5px">6.391,8 tr</div><div style="font-size:10px;color:#8A938B;margin-top:4px">đã loại VT999</div></div>
+        <div style="background:#EEF7DC;border:1px solid #DFEEBE;border-radius:10px;padding:11px 13px"><div style="font-size:11px;color:#6F7A5C;font-weight:600">Vốn mắc kẹt (Slow-Heavy)</div><div style="font-size:22px;font-weight:800;color:#33401A;margin-top:5px">2.402,8 tr</div><div style="font-size:10px;color:#8A9370;margin-top:4px">37,6% · 9 item</div></div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:11px 13px"><div style="font-size:11px;color:#8A938B;font-weight:600">Discontinued còn tồn</div><div style="font-size:22px;font-weight:800;color:#1B201B;margin-top:5px">580,1 tr</div><div style="font-size:10px;color:#8A938B;margin-top:4px">9,1% · 3 item</div></div>
+        <div style="background:#FCEDED;border:1px solid #F3D2D2;border-radius:10px;padding:11px 13px"><div style="font-size:11px;color:#B0554F;font-weight:600">Tồn âm</div><div style="font-size:22px;font-weight:800;color:#C0453F;margin-top:5px">4 dòng</div><div style="font-size:10px;color:#C08079;margin-top:4px">cần điều tra</div></div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:11px 13px"><div style="font-size:11px;color:#8A938B;font-weight:600">Dưới safety stock</div><div style="font-size:22px;font-weight:800;color:#1B201B;margin-top:5px">40/144</div><div style="font-size:10px;color:#8A938B;margin-top:4px">27,8% · 24 item</div></div>
+      </div>
+
+      <!-- hero row: scatter + two tables -->
+      <div style="display:grid;grid-template-columns:1.55fr 1fr;gap:12px;height:296px">
+        <!-- scatter -->
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:11px 14px;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:13px;font-weight:700;color:#1B201B">Slow &amp; Heavy Quadrant <span style="font-weight:500;color:#8A938B">· MOC × Inventory Value</span></div>
+            <div style="display:flex;gap:10px;font-size:9.5px;color:#6b746b"><span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#5F7D1F"></span>A</span><span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#A9CF6B"></span>B</span><span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#E6B45A"></span>C</span></div>
+          </div>
+          <svg viewBox="0 0 720 250" style="width:100%;flex:1;margin-top:4px">
+            <g fill="#AEB6AE" font-size="9"><text x="4" y="16">500tr</text><text x="4" y="130">250tr</text><text x="14" y="240">0</text></g>
+            <g stroke="#EEF1EC" stroke-width="1"><line x1="42" y1="12" x2="712" y2="12"/><line x1="42" y1="236" x2="712" y2="236"/></g>
+            <!-- constant lines -->
+            <line x1="383" y1="12" x2="383" y2="236" stroke="#C0453F" stroke-width="1.3" stroke-dasharray="5 4"/>
+            <text x="388" y="24" fill="#C0453F" font-size="9" font-weight="700">MOC = 12</text>
+            <line x1="42" y1="199" x2="712" y2="199" stroke="#C0453F" stroke-width="1.3" stroke-dasharray="5 4"/>
+            <text x="46" y="195" fill="#C0453F" font-size="9" font-weight="700">Median 127,6tr</text>
+            <text x="600" y="50" fill="#B0731A" font-size="10" font-weight="800" text-anchor="middle">SLOW &amp; HEAVY</text>
+            <!-- healthy / other bubbles (below median or low moc) -->
+            <g opacity="0.85">
+              <circle cx="90" cy="222" r="9" fill="#A9CF6B"/><circle cx="120" cy="214" r="11" fill="#5F7D1F"/><circle cx="150" cy="226" r="7" fill="#E6B45A"/><circle cx="185" cy="210" r="13" fill="#5F7D1F"/><circle cx="210" cy="228" r="8" fill="#A9CF6B"/><circle cx="245" cy="216" r="10" fill="#A9CF6B"/><circle cx="270" cy="230" r="6" fill="#E6B45A"/><circle cx="300" cy="212" r="12" fill="#5F7D1F"/><circle cx="330" cy="224" r="8" fill="#A9CF6B"/><circle cx="360" cy="228" r="7" fill="#E6B45A"/>
+              <circle cx="430" cy="203" r="8" fill="#E6B45A"/><circle cx="509" cy="210" r="9" fill="#A9CF6B"/><circle cx="557" cy="228" r="6" fill="#E6B45A"/><circle cx="699" cy="221" r="7" fill="#E6B45A"/>
+            </g>
+            <!-- 9 slow & heavy (top-right) -->
+            <g>
+              <circle cx="395" cy="33" r="17" fill="#5F7D1F" stroke="#C0453F" stroke-width="2"/><text x="395" y="36" text-anchor="middle" font-size="8" fill="#fff" font-weight="700">VT023</text>
+              <circle cx="629" cy="104" r="12" fill="#5F7D1F" stroke="#C0453F" stroke-width="2"/><text x="629" y="90" text-anchor="middle" font-size="8" fill="#4A544A" font-weight="700">VT011</text>
+              <circle cx="420" cy="106" r="11" fill="#A9CF6B" stroke="#C0453F" stroke-width="2"/><text x="420" y="123" text-anchor="middle" font-size="8" fill="#4A544A" font-weight="700">VT012</text>
+              <circle cx="628" cy="136" r="9" fill="#5F7D1F" stroke="#C0453F" stroke-width="2"/><text x="628" y="123" text-anchor="middle" font-size="8" fill="#4A544A" font-weight="700">VT014</text>
+              <circle cx="553" cy="140" r="12" fill="#E6B45A" stroke="#C0453F" stroke-width="2"/><text x="553" y="126" text-anchor="middle" font-size="8" fill="#4A544A" font-weight="700">VT021</text>
+              <circle cx="465" cy="142" r="11" fill="#5F7D1F" stroke="#C0453F" stroke-width="2"/><text x="465" y="159" text-anchor="middle" font-size="8" fill="#4A544A" font-weight="700">VT027</text>
+              <circle cx="404" cy="165" r="9" fill="#E6B45A" stroke="#C0453F" stroke-width="2"/>
+              <circle cx="438" cy="176" r="10" fill="#E6B45A" stroke="#C0453F" stroke-width="2"/><text x="438" y="192" text-anchor="middle" font-size="8" fill="#4A544A" font-weight="700">VT007</text>
+              <circle cx="503" cy="186" r="10" fill="#E6B45A" stroke="#C0453F" stroke-width="2"/>
+            </g>
+            <text x="700" y="248" text-anchor="end" fill="#8A938B" font-size="9">MOC (log) →</text>
+          </svg>
+        </div>
+        <!-- two stacked tables -->
+        <div style="display:flex;flex-direction:column;gap:12px;min-height:0">
+          <div style="background:#FCEDED;border:1px solid #F3D2D2;border-radius:10px;padding:10px 13px;flex:1;min-height:0">
+            <div style="font-size:12.5px;font-weight:700;color:#B0453F;margin-bottom:4px">Tồn âm (4)</div>
+            <table style="width:100%;border-collapse:collapse;font-size:10px">
+              <thead><tr style="color:#B0776F;font-size:9px;text-align:left"><th style="padding:2px 3px">Item</th><th style="padding:2px 3px">Kho</th><th style="padding:2px 3px;text-align:right">OnHand</th><th style="padding:2px 3px;text-align:right">Value</th><th style="padding:2px 3px;text-align:right">Safety</th></tr></thead>
+              <tbody style="color:#7a3f3a">
+                <tr><td style="padding:2.5px 3px;font-weight:600">VT018 Hóa chất 18</td><td style="padding:2.5px 3px">WH_HN</td><td style="padding:2.5px 3px;text-align:right;font-weight:700">−7</td><td style="padding:2.5px 3px;text-align:right">−3,36tr</td><td style="padding:2.5px 3px;text-align:right">10</td></tr>
+                <tr><td style="padding:2.5px 3px;font-weight:600">VT010 PT nhanh 10</td><td style="padding:2.5px 3px">WH_DN</td><td style="padding:2.5px 3px;text-align:right;font-weight:700">−3</td><td style="padding:2.5px 3px;text-align:right">−2,70tr</td><td style="padding:2.5px 3px;text-align:right">30</td></tr>
+                <tr><td style="padding:2.5px 3px;font-weight:600">VT016 PT nhanh 16</td><td style="padding:2.5px 3px">WH_DA</td><td style="padding:2.5px 3px;text-align:right;font-weight:700">−2</td><td style="padding:2.5px 3px;text-align:right">−1,30tr</td><td style="padding:2.5px 3px;text-align:right">20</td></tr>
+                <tr><td style="padding:2.5px 3px;font-weight:600">VT018 Hóa chất 18</td><td style="padding:2.5px 3px">WH_DN</td><td style="padding:2.5px 3px;text-align:right;font-weight:700">−1</td><td style="padding:2.5px 3px;text-align:right">−0,48tr</td><td style="padding:2.5px 3px;text-align:right">20</td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:8.5px;color:#B0776F;margin-top:3px">VT018 âm ở 2 kho ⇒ lỗi quy trình. KHÔNG set = 0.</div>
+          </div>
+          <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:10px 13px;flex:1;min-height:0">
+            <div style="font-size:12.5px;font-weight:700;color:#1B201B;margin-bottom:4px">Discontinued còn tồn (3)</div>
+            <table style="width:100%;border-collapse:collapse;font-size:10px">
+              <thead><tr style="color:#A7B0A7;font-size:9px;text-align:left"><th style="padding:2px 3px">Item</th><th style="padding:2px 3px;text-align:right">Tồn</th><th style="padding:2px 3px;text-align:right">Value</th><th style="padding:2px 3px;text-align:right">CK tối đa</th></tr></thead>
+              <tbody style="color:#4A544A">
+                <tr class="rq-row"><td style="padding:3px;font-weight:600;color:#1B201B">VT021 Lốp 21</td><td style="padding:3px;text-align:right">716</td><td style="padding:3px;text-align:right;font-weight:700;color:#1B201B">250,6tr</td><td style="padding:3px;text-align:right;color:#C0453F;font-weight:700">15,3%</td></tr>
+                <tr class="rq-row"><td style="padding:3px;font-weight:600;color:#1B201B">VT007 Dầu nhớt 07</td><td style="padding:3px;text-align:right">502</td><td style="padding:3px;text-align:right;font-weight:700;color:#1B201B">175,7tr</td><td style="padding:3px;text-align:right;font-weight:700">21,9%</td></tr>
+                <tr class="rq-row"><td style="padding:3px;font-weight:600;color:#1B201B">VT035 PT thân vỏ 35</td><td style="padding:3px;text-align:right">615</td><td style="padding:3px;text-align:right;font-weight:700;color:#1B201B">153,8tr</td><td style="padding:3px;text-align:right;font-weight:700">19,9%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- bars + heatmap -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:12px;flex:1;min-height:0">
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:11px 14px">
+          <div style="font-size:12px;font-weight:700;color:#1B201B;margin-bottom:8px">Inventory by Warehouse</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:52px;font-size:10px;color:#4A544A">WH_HN</span><div style="flex:1;height:13px;background:#F1F4EE;border-radius:3px"><div style="width:100%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:9.5px;font-weight:700;color:#4A544A;width:30px;text-align:right">1,21</span></div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:52px;font-size:10px;color:#4A544A">WH_DN</span><div style="flex:1;height:13px;background:#F1F4EE;border-radius:3px"><div style="width:95%;height:100%;background:#C0453F;border-radius:3px"></div></div><span style="font-size:9.5px;font-weight:700;color:#C0453F;width:30px;text-align:right">1,53</span></div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:52px;font-size:10px;color:#4A544A">WH_HCM</span><div style="flex:1;height:13px;background:#F1F4EE;border-radius:3px"><div style="width:89%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:9.5px;font-weight:700;color:#4A544A;width:30px;text-align:right">1,04</span></div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:52px;font-size:10px;color:#4A544A">WH_DA</span><div style="flex:1;height:13px;background:#F1F4EE;border-radius:3px"><div style="width:87%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:9.5px;font-weight:700;color:#4A544A;width:30px;text-align:right">1,21</span></div>
+          </div>
+          <div style="font-size:9px;color:#8A938B;margin-top:7px">nhãn = tỷ lệ tồn / doanh thu (WH_DN cao nhất)</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:11px 14px">
+          <div style="font-size:12px;font-weight:700;color:#1B201B;margin-bottom:8px">Inventory by Category</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:66px;font-size:9.5px;color:#4A544A">Dầu nhớt</span><div style="flex:1;height:11px;background:#F1F4EE;border-radius:3px"><div style="width:100%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:9px;font-weight:700;color:#4A544A;width:32px;text-align:right">21,3%</span></div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:66px;font-size:9.5px;color:#4A544A">PT thân vỏ</span><div style="flex:1;height:11px;background:#F1F4EE;border-radius:3px"><div style="width:99%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:9px;font-weight:700;color:#4A544A;width:32px;text-align:right">21,0%</span></div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:66px;font-size:9.5px;color:#4A544A">Ắc quy</span><div style="flex:1;height:11px;background:#F1F4EE;border-radius:3px"><div style="width:89%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:9px;font-weight:700;color:#4A544A;width:32px;text-align:right">18,9%</span></div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:66px;font-size:9.5px;color:#4A544A">Hóa chất</span><div style="flex:1;height:11px;background:#F1F4EE;border-radius:3px"><div style="width:77%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:9px;font-weight:700;color:#4A544A;width:32px;text-align:right">16,4%</span></div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:66px;font-size:9.5px;color:#4A544A">Lốp</span><div style="flex:1;height:11px;background:#F1F4EE;border-radius:3px"><div style="width:71%;height:100%;background:#7FAE3E;border-radius:3px"></div></div><span style="font-size:9px;font-weight:700;color:#4A544A;width:32px;text-align:right">15,2%</span></div>
+            <div style="display:flex;align-items:center;gap:6px"><span style="width:66px;font-size:9.5px;color:#4A544A">PT nhanh</span><div style="flex:1;height:11px;background:#F1F4EE;border-radius:3px"><div style="width:34%;height:100%;background:#E6B45A;border-radius:3px"></div></div><span style="font-size:9px;font-weight:700;color:#C08420;width:32px;text-align:right">7,3%</span></div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:11px 14px">
+          <div style="font-size:12px;font-weight:700;color:#1B201B;margin-bottom:7px">Heatmap · Warehouse × Category <span style="font-weight:500;color:#8A938B">(tr)</span></div>
+          <table style="width:100%;border-collapse:collapse;font-size:9px;text-align:center">
+            <thead><tr style="color:#A7B0A7"><th style="padding:2px;text-align:left"></th><th style="padding:2px">HN</th><th style="padding:2px">DA</th><th style="padding:2px">DN</th><th style="padding:2px">HCM</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:2px;text-align:left;color:#4A544A">Dầu nhớt</td><td style="padding:3px;background:#cfe3a8;color:#33401a">305</td><td style="padding:3px;background:#d3e6ae;color:#33401a">294</td><td style="padding:3px;background:#7FAE3E;color:#fff;font-weight:700">458</td><td style="padding:3px;background:#d0e4a9;color:#33401a">302</td></tr>
+              <tr><td style="padding:2px;text-align:left;color:#4A544A">PT thân vỏ</td><td style="padding:3px;background:#a9cf6b;color:#33401a">392</td><td style="padding:3px;background:#dcecc0;color:#33401a">248</td><td style="padding:3px;background:#8fbb4c;color:#fff;font-weight:700">400</td><td style="padding:3px;background:#d2e5ab;color:#33401a">301</td></tr>
+              <tr><td style="padding:2px;text-align:left;color:#4A544A">Ắc quy</td><td style="padding:3px;background:#d5e7b2;color:#33401a">288</td><td style="padding:3px;background:#dcecc0;color:#33401a">262</td><td style="padding:3px;background:#eaf3d8;color:#5c6a3e">155</td><td style="padding:3px;background:#5F7D1F;color:#fff;font-weight:700">502</td></tr>
+              <tr><td style="padding:2px;text-align:left;color:#4A544A">Hóa chất</td><td style="padding:3px;background:#cfe3a8;color:#33401a">308</td><td style="padding:3px;background:#cce1a2;color:#33401a">317</td><td style="padding:3px;background:#dcecc0;color:#33401a">263</td><td style="padding:3px;background:#eaf3d8;color:#5c6a3e">160</td></tr>
+              <tr><td style="padding:2px;text-align:left;color:#4A544A">Lốp</td><td style="padding:3px;background:#d3e6ae;color:#33401a">294</td><td style="padding:3px;background:#dcecc0;color:#33401a">260</td><td style="padding:3px;background:#d5e7b2;color:#33401a">286</td><td style="padding:3px;background:#f0f6e3;color:#5c6a3e">132</td></tr>
+              <tr><td style="padding:2px;text-align:left;color:#4A544A">PT nhanh</td><td style="padding:3px;background:#eef6df;color:#5c6a3e">136</td><td style="padding:3px;background:#f0f6e3;color:#5c6a3e">122</td><td style="padding:3px;background:#f6faee;color:#8a938b">68</td><td style="padding:3px;background:#edf5dc;color:#5c6a3e">139</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="font-size:9px;color:#8A938B;line-height:1.5">
+        Region trang này = vùng <b>KHO</b> (DB1 dùng vùng KHÁCH HÀNG). · Đã loại orphan VT999 (WH_HN, 50đv, 5tr). · Slow &amp; Heavy = Giá trị tồn &gt; trung vị (127,6tr) <b>VÀ</b> MOC &gt; 12 tháng — xếp chỉ theo MOC sẽ cảnh báo sai (VT033: MOC 65,7 nhưng chỉ 72,8tr vốn). · Tồn âm KHÔNG set = 0 — dấu hiệu lỗi quy trình.
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ================= DB3 ================= -->
+    <sc-if value="{{ is3 }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;padding:22px 24px 16px;gap:12px">
+      <div style="font-size:18px;font-weight:800;color:#1B201B;letter-spacing:-.3px">Data Quality / Reconciliation <span style="font-size:12px;font-weight:600;color:#8A938B">· last run 09/07/2026</span></div>
+      <div style="background:#F4F8F2;border:1px solid #E4EBE4;border-radius:8px;padding:9px 13px;font-size:11.5px;color:#4A544A"><b style="color:#1B201B">Mục tiêu:</b> Chứng minh số liệu ở Dashboard 1 &amp; 2 đáng tin đến mức nào, định lượng phần không đáng tin bằng tiền, và chỉ ra ai phải sửa cái gì.</div>
+
+      <!-- Tầng 1: 4 KPI -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="background:#fff;border:1px solid #E7ECE3;border-left:3px solid #7FAE3E;border-radius:10px;padding:12px 14px"><div style="font-size:11.5px;color:#8A938B;font-weight:600">DQ Score <span style="color:#7FAE3E">● dữ liệu</span></div><div style="display:flex;gap:14px;margin-top:6px"><div><div style="font-size:22px;font-weight:800;color:#1B201B">97,79%</div><div style="font-size:9.5px;color:#8A938B">SO</div></div><div><div style="font-size:22px;font-weight:800;color:#1B201B">98,27%</div><div style="font-size:9.5px;color:#8A938B">INV</div></div></div></div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-left:3px solid #7A5FAE;border-radius:10px;padding:12px 14px"><div style="font-size:11.5px;color:#8A938B;font-weight:600">PV Score <span style="color:#7A5FAE">● quy trình</span></div><div style="font-size:25px;font-weight:800;color:#5B3E8E;margin-top:6px">13,94%</div><div style="font-size:10px;color:#8A938B;margin-top:4px">63 dòng · đội bán hàng</div></div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 14px"><div style="font-size:11.5px;color:#8A938B;font-weight:600">Sai lệch nếu KHÔNG làm sạch</div><div style="font-size:25px;font-weight:800;color:#1B201B;margin-top:6px">+2,82%</div><div style="font-size:10px;color:#8A938B;margin-top:4px">Revenue bị thổi lên</div></div>
+        <div style="background:#FCEDED;border:1px solid #F3D2D2;border-radius:10px;padding:12px 14px"><div style="font-size:11.5px;color:#B0554F;font-weight:700">⚠ Sai lệch nếu DEDUPE SAI</div><div style="font-size:25px;font-weight:800;color:#C0453F;margin-top:6px">−5,63%</div><div style="font-size:10px;color:#C08079;margin-top:4px">−293,1 tr · nguy hiểm gấp đôi</div></div>
+      </div>
+
+      <!-- Tầng 2: waterfall -->
+      <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+        <div style="font-size:13.5px;font-weight:700;color:#1B201B">Revenue Reconciliation — Waterfall <span style="font-weight:500;color:#8A938B">(tr ₫)</span></div>
+        <svg viewBox="0 0 1180 190" style="width:100%;height:180px">
+          <g stroke="#EEF1EC" stroke-width="1"><line x1="60" y1="18" x2="1150" y2="18"/><line x1="60" y1="70" x2="1150" y2="70"/><line x1="60" y1="122" x2="1150" y2="122"/><line x1="60" y1="150" x2="1150" y2="150"/></g>
+          <g fill="#AEB6AE" font-size="9"><text x="10" y="22">5.500</text><text x="10" y="126">5.100</text></g>
+          <!-- A full -->
+          <rect x="90" y="24" width="150" height="126" fill="#7FAE3E" rx="2"/><text x="165" y="16" text-anchor="middle" font-size="9.5" font-weight="700" fill="#4A544A">5.463</text><text x="165" y="166" text-anchor="middle" font-size="10" fill="#8A938B">A · Gross</text>
+          <!-- B -12 -->
+          <rect x="300" y="24" width="150" height="4" fill="#C0453F" rx="1"/><text x="375" y="20" text-anchor="middle" font-size="9" fill="#C0453F">−12</text><text x="375" y="166" text-anchor="middle" font-size="10" fill="#8A938B">B · dup thật</text>
+          <!-- C -135 -->
+          <rect x="510" y="28" width="150" height="31" fill="#C0453F" rx="2"/><text x="585" y="22" text-anchor="middle" font-size="9" fill="#C0453F">−135</text><text x="585" y="166" text-anchor="middle" font-size="10" fill="#8A938B">C · Qty=900</text>
+          <!-- D -108 -->
+          <rect x="720" y="59" width="150" height="25" fill="#C0453F" rx="2"/><text x="795" y="53" text-anchor="middle" font-size="9" fill="#C0453F">−108</text><text x="795" y="166" text-anchor="middle" font-size="10" fill="#8A938B">D · Return</text>
+          <!-- total -->
+          <rect x="930" y="84" width="150" height="66" fill="#5F7D1F" rx="2"/><text x="1005" y="78" text-anchor="middle" font-size="9.5" font-weight="700" fill="#4A544A">5.209</text><text x="1005" y="166" text-anchor="middle" font-size="10" fill="#1B201B" font-weight="700">Revenue Net</text>
+          <g stroke="#c9d2c6" stroke-width="1" stroke-dasharray="3 3"><line x1="240" y1="24" x2="300" y2="24"/><line x1="450" y1="28" x2="510" y2="28"/><line x1="660" y1="59" x2="720" y2="59"/><line x1="870" y1="84" x2="930" y2="84"/></g>
+        </svg>
+        <div style="font-size:9.5px;color:#8A938B">Cancelled đóng góp 0 đồng. · Nhánh "dedupe sai theo OrderNo+LineNo" (−293,1tr) KHÔNG vẽ ở đây — đã tách sang card KPI ở trên.</div>
+      </div>
+
+      <!-- matrix + recon -->
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:12px">
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+          <div style="font-size:13px;font-weight:700;color:#1B201B;margin-bottom:7px">Ba tầng lỗi — ba chỉ số — ba người sửa</div>
+          <table style="width:100%;border-collapse:collapse;font-size:11px">
+            <thead><tr style="color:#A7B0A7;font-size:9.5px;text-align:left"><th style="padding:4px">Tầng</th><th style="padding:4px">Câu hỏi</th><th style="padding:4px">Chỉ số</th><th style="padding:4px">Ai sửa</th></tr></thead>
+            <tbody>
+              <tr style="border-top:1px solid #F0F3EF"><td style="padding:6px 4px;font-weight:700;color:#7FAE3E">Dữ liệu</td><td style="padding:6px 4px;color:#4A544A">Ghi đúng cái đã xảy ra?</td><td style="padding:6px 4px;font-weight:700;color:#1B201B">DQ 97,79%</td><td style="padding:6px 4px;color:#4A544A">Nhập liệu / ETL</td></tr>
+              <tr style="border-top:1px solid #F0F3EF"><td style="padding:6px 4px;font-weight:700;color:#7A5FAE">Quy trình</td><td style="padding:6px 4px;color:#4A544A">Cái đã xảy ra có được phép?</td><td style="padding:6px 4px;font-weight:700;color:#5B3E8E">PV 13,94%</td><td style="padding:6px 4px;color:#4A544A">QL bán hàng</td></tr>
+              <tr style="border-top:1px solid #F0F3EF"><td style="padding:6px 4px;font-weight:700;color:#4A544A">Thiết kế</td><td style="padding:6px 4px;color:#4A544A">Hệ thống có đúng?</td><td style="padding:6px 4px;font-weight:600;color:#8A938B">không đo bằng %</td><td style="padding:6px 4px;color:#4A544A">IT / kiến trúc</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+          <div style="font-size:13px;font-weight:700;color:#1B201B">Reconciliation tồn kho</div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px"><span style="font-size:26px;font-weight:800;color:#3F9A5A">99,88%</span><span style="font-size:11px;color:#8A938B">864 / 865 khớp</span></div>
+          <div style="margin-top:8px;font-size:10px;color:#8A938B">Dòng lệch duy nhất:</div>
+          <div style="background:#FBF6EC;border:1px solid #EFE3C8;border-radius:6px;padding:6px 9px;margin-top:4px;font-size:10.5px;color:#4A544A">30/06/2026 · <b>VT999</b> · WH_HN · 50đv · 5.000.000₫</div>
+          <div style="font-size:9px;color:#8A938B;margin-top:6px">Rule reconciliation nội bộ tự phát hiện orphan FK mà không cần join dim.</div>
+        </div>
+      </div>
+
+      <!-- audit table 11 -->
+      <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+        <div style="font-size:13.5px;font-weight:700;color:#1B201B;margin-bottom:6px">Bảng Audit — 11 vấn đề <span style="font-weight:500;color:#8A938B">· cột hint = data_quality_hint có nhắc không (5 vấn đề ✗ do tự tìm ra)</span></div>
+        <table style="width:100%;border-collapse:collapse;font-size:10.5px">
+          <thead><tr style="color:#A7B0A7;font-size:9px;text-transform:uppercase;letter-spacing:.3px;text-align:left"><th style="padding:4px">#</th><th style="padding:4px">hint</th><th style="padding:4px">Vấn đề</th><th style="padding:4px">Bảng</th><th style="padding:4px;text-align:right">Dòng</th><th style="padding:4px">Ảnh hưởng tiền</th><th style="padding:4px">Rule tương lai</th></tr></thead>
+          <tbody>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF;background:#FBF3F3"><td style="padding:4px">1</td><td style="padding:4px;color:#C0453F;font-weight:800">✗</td><td style="padding:4px;font-weight:600;color:#1B201B">Không có khóa tự nhiên</td><td style="padding:4px;color:#8A938B">SO</td><td style="padding:4px;text-align:right">toàn bộ</td><td style="padding:4px;color:#C0453F;font-weight:700">−293,1tr nếu dedupe sai</td><td style="padding:4px;color:#6b746b">🔴 surrogate PK</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:4px">2</td><td style="padding:4px;color:#3F9A5A;font-weight:800">✓</td><td style="padding:4px;font-weight:600;color:#1B201B">Dòng trùng thật (SO2602-0137)</td><td style="padding:4px;color:#8A938B">SO</td><td style="padding:4px;text-align:right">2</td><td style="padding:4px;color:#4A544A">−11,96tr</td><td style="padding:4px;color:#6b746b">🔴 chặn bản ghi giống hệt</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:4px">3</td><td style="padding:4px;color:#3F9A5A;font-weight:800">✓</td><td style="padding:4px;font-weight:600;color:#1B201B">Orphan FK (KH999, VT999)</td><td style="padding:4px;color:#8A938B">SO/INV</td><td style="padding:4px;text-align:right">6</td><td style="padding:4px;color:#4A544A">74,5tr ngoài grain</td><td style="padding:4px;color:#6b746b">🔴 FK phải có trong dim</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:4px">4</td><td style="padding:4px;color:#3F9A5A;font-weight:800">✓</td><td style="padding:4px;font-weight:600;color:#1B201B">UnitPrice = 0</td><td style="padding:4px;color:#8A938B">SO</td><td style="padding:4px;text-align:right">1</td><td style="padding:4px;color:#4A544A">biên âm</td><td style="padding:4px;color:#6b746b">🔴 UnitPrice &gt; 0</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:4px">5</td><td style="padding:4px;color:#3F9A5A;font-weight:800">✓</td><td style="padding:4px;font-weight:600;color:#1B201B">DiscountPct = 65%</td><td style="padding:4px;color:#8A938B">SO</td><td style="padding:4px;text-align:right">1</td><td style="padding:4px;color:#4A544A">917.700₫</td><td style="padding:4px;color:#6b746b">🟡 Discount &gt; 20% duyệt</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:4px">6</td><td style="padding:4px;color:#3F9A5A;font-weight:800">✓</td><td style="padding:4px;font-weight:600;color:#1B201B">QtyOrder = 900 (bất khả thi vật lý)</td><td style="padding:4px;color:#8A938B">SO</td><td style="padding:4px;text-align:right">1</td><td style="padding:4px;color:#C0453F;font-weight:700">−135tr</td><td style="padding:4px;color:#6b746b">🔴 Qty ≤ OnHand (cross-table)</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:4px">7</td><td style="padding:4px;color:#3F9A5A;font-weight:800">✓</td><td style="padding:4px;font-weight:600;color:#1B201B">Tồn âm (4 dòng còn âm)</td><td style="padding:4px;color:#8A938B">INV</td><td style="padding:4px;text-align:right">14</td><td style="padding:4px;color:#4A544A">bất khả thi</td><td style="padding:4px;color:#6b746b">🔴 OnHandQty ≥ 0</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF"><td style="padding:4px">8</td><td style="padding:4px;color:#3F9A5A;font-weight:800">✓</td><td style="padding:4px;font-weight:600;color:#1B201B">LastReceiptDate là Excel serial</td><td style="padding:4px;color:#8A938B">INV</td><td style="padding:4px;text-align:right">865</td><td style="padding:4px;color:#4A544A">aging sai</td><td style="padding:4px;color:#6b746b">🔴 ép kiểu date ETL</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF;background:#FBF3F3"><td style="padding:4px">9</td><td style="padding:4px;color:#C0453F;font-weight:800">✗</td><td style="padding:4px;font-weight:600;color:#1B201B">fact.Salesperson ≠ dim.Salesperson</td><td style="padding:4px;color:#8A938B">SO</td><td style="padding:4px;text-align:right">344</td><td style="padding:4px;color:#4A544A">báo cáo NV sai</td><td style="padding:4px;color:#6b746b">📘 data dictionary</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF;background:#FBF3F3"><td style="padding:4px">10</td><td style="padding:4px;color:#C0453F;font-weight:800">✗</td><td style="padding:4px;font-weight:600;color:#1B201B">Plan &amp; fact khác phạm vi (mẫu ~6%)</td><td style="padding:4px;color:#8A938B">PLAN</td><td style="padding:4px;text-align:right">108</td><td style="padding:4px;color:#4A544A">% plan không đọc được</td><td style="padding:4px;color:#6b746b">📘 reconcile scope</td></tr>
+            <tr class="rq-row" style="border-top:1px solid #F0F3EF;background:#FBF3F3"><td style="padding:4px">11</td><td style="padding:4px;color:#C0453F;font-weight:800">✗</td><td style="padding:4px;font-weight:600;color:#1B201B">InventoryValue là cột dẫn xuất</td><td style="padding:4px;color:#8A938B">INV</td><td style="padding:4px;text-align:right">865</td><td style="padding:4px;color:#4A544A">cột thừa</td><td style="padding:4px;color:#6b746b">📘 tính bằng measure</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tầng 3: dq month/wh + pv person -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+          <div style="font-size:12.5px;font-weight:700;color:#1B201B;margin-bottom:6px">DQ Score theo tháng / kho</div>
+          <div style="display:flex;gap:14px">
+            <table style="flex:1;border-collapse:collapse;font-size:10px"><thead><tr style="color:#A7B0A7;font-size:9px;text-align:left"><th style="padding:2px">Tháng</th><th style="padding:2px;text-align:right">Bẩn</th><th style="padding:2px;text-align:right">DQ%</th></tr></thead><tbody style="color:#4A544A">
+              <tr><td style="padding:2px">2026-01</td><td style="padding:2px;text-align:right">1</td><td style="padding:2px;text-align:right">98,55</td></tr>
+              <tr><td style="padding:2px">2026-02</td><td style="padding:2px;text-align:right">2</td><td style="padding:2px;text-align:right">96,43</td></tr>
+              <tr><td style="padding:2px">2026-03</td><td style="padding:2px;text-align:right">2</td><td style="padding:2px;text-align:right">97,40</td></tr>
+              <tr><td style="padding:2px">2026-04</td><td style="padding:2px;text-align:right">3</td><td style="padding:2px;text-align:right;font-weight:700">95,83</td></tr>
+              <tr><td style="padding:2px">2026-05</td><td style="padding:2px;text-align:right">1</td><td style="padding:2px;text-align:right">99,04</td></tr>
+              <tr><td style="padding:2px">2026-06</td><td style="padding:2px;text-align:right">1</td><td style="padding:2px;text-align:right">98,65</td></tr>
+            </tbody></table>
+            <table style="flex:1;border-collapse:collapse;font-size:10px"><thead><tr style="color:#A7B0A7;font-size:9px;text-align:left"><th style="padding:2px">Kho</th><th style="padding:2px;text-align:right">Bẩn</th><th style="padding:2px;text-align:right">DQ%</th></tr></thead><tbody style="color:#4A544A">
+              <tr><td style="padding:2px">WH_DN</td><td style="padding:2px;text-align:right">1</td><td style="padding:2px;text-align:right">99,03</td></tr>
+              <tr><td style="padding:2px">WH_HCM</td><td style="padding:2px;text-align:right">2</td><td style="padding:2px;text-align:right">98,26</td></tr>
+              <tr><td style="padding:2px">WH_DA</td><td style="padding:2px;text-align:right">3</td><td style="padding:2px;text-align:right">97,48</td></tr>
+              <tr><td style="padding:2px">WH_HN</td><td style="padding:2px;text-align:right">4</td><td style="padding:2px;text-align:right;font-weight:700">96,49</td></tr>
+              <tr><td style="padding:2px">WH_OLD</td><td style="padding:2px;text-align:right">0</td><td style="padding:2px;text-align:right">100</td></tr>
+            </tbody></table>
+          </div>
+          <div style="font-size:9px;color:#C08420;margin-top:6px">⚠ 10 dòng bẩn trải 6 tháng / 4 kho — chênh lệch giữa các nhóm là <b>nhiễu, không phải tín hiệu</b>. Không kết luận "tháng 4 tệ nhất".</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+          <div style="font-size:12.5px;font-weight:700;color:#1B201B;margin-bottom:8px">PV Score theo nhân viên <span style="font-weight:500;color:#8A938B">· fact.Salesperson</span></div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:54px;font-size:11px;color:#4A544A">NV Dũng</span><div style="flex:1;height:15px;background:#F1EEF7;border-radius:3px"><div style="width:100%;height:100%;background:#7A5FAE;border-radius:3px"></div></div><span style="font-size:10.5px;font-weight:700;color:#5B3E8E;width:40px;text-align:right">19,3%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:54px;font-size:11px;color:#4A544A">NV Bình</span><div style="flex:1;height:15px;background:#F1EEF7;border-radius:3px"><div style="width:77%;height:100%;background:#7A5FAE;border-radius:3px"></div></div><span style="font-size:10.5px;font-weight:700;color:#5B3E8E;width:40px;text-align:right">14,9%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:54px;font-size:11px;color:#4A544A">NV An</span><div style="flex:1;height:15px;background:#F1EEF7;border-radius:3px"><div style="width:63%;height:100%;background:#9B85C4;border-radius:3px"></div></div><span style="font-size:10.5px;font-weight:700;color:#5B3E8E;width:40px;text-align:right">12,2%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:54px;font-size:11px;color:#4A544A">NV Chi</span><div style="flex:1;height:15px;background:#F1EEF7;border-radius:3px"><div style="width:50%;height:100%;background:#9B85C4;border-radius:3px"></div></div><span style="font-size:10.5px;font-weight:700;color:#5B3E8E;width:40px;text-align:right">9,6%</span></div>
+          </div>
+          <div style="background:#FBF6EC;border:1px solid #EFE3C8;border-radius:6px;padding:7px 10px;margin-top:9px;font-size:10px;color:#8a6d2a"><b>χ² = 4,716; p = 0,194.</b> Chênh lệch gấp 2× giữa NV Dũng và NV Chi KHÔNG có ý nghĩa thống kê ở mức 5%.</div>
+        </div>
+      </div>
+
+      <!-- checklist -->
+      <div style="background:#fff;border:1px solid #E7ECE3;border-radius:10px;padding:12px 16px">
+        <div style="font-size:13px;font-weight:700;color:#1B201B;margin-bottom:8px">Checklist rule kiểm tra <span style="font-weight:500;color:#8A938B">· 9 Hard 🔴 · 4 Soft 🟡 · 3 Doc 📘</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;font-size:10.5px;color:#4A544A">
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#C0453F;margin-bottom:5px">🔴 HARD BLOCK</div>
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <div>H1 · Surrogate PK cho fact</div><div>H2 · Chặn bản ghi giống hệt</div><div>H3 · FK tồn tại trong dim</div><div>H4 · UnitPrice &gt; 0</div><div>H5 · OnHandQty ≥ 0 khi chốt sổ</div><div>H6 · Ép kiểu date tại ETL</div><div>H7 · Chặn mã đơn sentinel 9999/0000</div><div>H8 · Không chọn master inactive</div><div>H9 · Qty ≤ OnHand (cross-table)</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#C08420;margin-bottom:5px">🟡 SOFT WARNING</div>
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <div>S1 · Discount &gt; 20% cần duyệt</div><div>S2 · Qty &gt; 3× P99 theo item</div><div>S3 · Bán dưới giá vốn</div><div>S4 · Giao trễ (OTD)</div>
+            </div>
+            <div style="font-size:10px;font-weight:700;color:#4A544A;margin:9px 0 5px">📘 GHI TÀI LIỆU</div>
+            <div style="display:flex;flex-direction:column;gap:3px"><div>D1 · Phân biệt 2 cột Salesperson</div><div>D2 · Reconcile scope plan/fact</div><div>D3 · Không lưu cột dẫn xuất</div></div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:#5F7D1F;margin-bottom:5px">Q11 · CHỈ SỐ KỲ VỌNG SAU RULE</div>
+            <table style="width:100%;border-collapse:collapse;font-size:10px"><tbody style="color:#4A544A">
+              <tr style="border-bottom:1px solid #F0F3EF"><td style="padding:3px 0">DQ (SO)</td><td style="padding:3px 0;text-align:right">97,79% →</td><td style="padding:3px 0;text-align:right;font-weight:700;color:#3F9A5A">100%</td></tr>
+              <tr style="border-bottom:1px solid #F0F3EF"><td style="padding:3px 0">DQ (INV)</td><td style="padding:3px 0;text-align:right">98,27% →</td><td style="padding:3px 0;text-align:right;font-weight:700;color:#3F9A5A">100%</td></tr>
+              <tr style="border-bottom:1px solid #F0F3EF"><td style="padding:3px 0">PV Score</td><td style="padding:3px 0;text-align:right">13,94% →</td><td style="padding:3px 0;text-align:right;font-weight:700;color:#3F9A5A">0%</td></tr>
+              <tr><td style="padding:3px 0">Reconciliation</td><td style="padding:3px 0;text-align:right">99,88% →</td><td style="padding:3px 0;text-align:right;font-weight:700;color:#3F9A5A">100%</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- limits -->
+      <div style="background:#F4F8F2;border:1px solid #E4EBE4;border-radius:10px;padding:12px 16px">
+        <div style="font-size:12.5px;font-weight:700;color:#1B201B;margin-bottom:6px">Những gì Dashboard 3 KHÔNG trả lời được</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 20px;font-size:10.5px;color:#4A544A">
+          <div>• <b>Vì sao VT018 tồn âm?</b> — snapshot cuối tháng, không có bảng phát sinh nhập/xuất.</div>
+          <div>• <b>Ai nhập sai UnitPrice = 0?</b> — không có cột CreatedBy / ModifiedAt.</div>
+          <div>• <b>Vì sao OrderNo bị trùng?</b> — không có log hệ thống.</div>
+          <div>• <b>Vì sao QtyOrder = 900?</b> — chứng minh được "sai", không biết "vì sao sai".</div>
+          <div>• <b>Plan lập theo cơ sở nào?</b> — không có metadata; chỉ biết khác phạm vi.</div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1330,&quot;height&quot;:800}}">
+class Component extends DCLogic {
+  state = { view: 'db1' };
+
+  tabStyle(active) {
+    return {
+      border: 'none', cursor: 'pointer', borderRadius: '8px', padding: '7px 14px',
+      fontFamily: "'Segoe UI',sans-serif", fontSize: '12px',
+      fontWeight: active ? 700 : 600,
+      background: active ? '#1B201B' : '#fff',
+      color: active ? '#fff' : '#5b645b',
+      boxShadow: active ? 'none' : 'inset 0 0 0 1px #E7ECE3'
+    };
+  }
+
+  renderVals() {
+    const v = this.state.view;
+    const h = v === 'db3' ? 1600 : 720;
+    return {
+      is1: v === 'db1', is2: v === 'db2', is3: v === 'db3',
+      go1: () => this.setState({ view: 'db1' }),
+      go2: () => this.setState({ view: 'db2' }),
+      go3: () => this.setState({ view: 'db3' }),
+      tab1: this.tabStyle(v === 'db1'),
+      tab2: this.tabStyle(v === 'db2'),
+      tab3: this.tabStyle(v === 'db3'),
+      canvasLabel: '1280 × ' + h,
+      canvasStyle: {
+        width: '1280px', height: h + 'px',
+        background: '#EAF0EA', borderRadius: '14px', overflow: 'hidden',
+        boxShadow: '0 20px 50px -25px rgba(40,60,40,.4)'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

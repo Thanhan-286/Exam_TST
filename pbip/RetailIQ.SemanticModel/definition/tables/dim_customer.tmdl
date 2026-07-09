@@ -1,0 +1,50 @@
+table dim_customer
+	lineageTag: 5c6fbf97-bfaa-4f22-98fa-bc0c1047cf94
+
+	column customer_code
+		dataType: string
+		isHidden
+		lineageTag: 93c6af3d-dd2d-4e56-a103-1e44b69da6c6
+		summarizeBy: none
+		sourceColumn: customer_code
+
+	column customer_name
+		dataType: string
+		lineageTag: f3f56d46-3b17-4202-9a4f-e2e5d7dfb132
+		summarizeBy: none
+		sourceColumn: customer_name
+
+	column region
+		dataType: string
+		isHidden
+		lineageTag: 09b9d3cb-d907-4b18-80ef-cf30643f681e
+		summarizeBy: none
+		sourceColumn: region
+
+	column channel
+		dataType: string
+		lineageTag: 9d69941c-163a-4716-bb8d-e4e0ff418bed
+		summarizeBy: none
+		sourceColumn: channel
+
+	column salesperson
+		dataType: string
+		lineageTag: 12bea0eb-a334-4350-b8d3-ccf7927f01a6
+		summarizeBy: none
+		sourceColumn: salesperson
+
+	column customer_status
+		dataType: string
+		lineageTag: 21b1ad19-d012-464e-85f3-2a85258e78ca
+		summarizeBy: none
+		sourceColumn: customer_status
+
+	partition dim_customer = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="dim_customer"]}[Data]
+				in
+				    data
+

@@ -1,0 +1,25 @@
+table dim_market_region
+	lineageTag: 1d0e599e-d722-462b-a434-0dd0d728b191
+
+	column market_region
+		dataType: string
+		lineageTag: e587e073-edde-49e8-b5a6-b91467a63cc8
+		summarizeBy: none
+		sourceColumn: market_region
+
+	column is_unknown
+		dataType: boolean
+		isHidden
+		lineageTag: edae66ee-d3e4-4d16-bf3b-05994601c04a
+		summarizeBy: none
+		sourceColumn: is_unknown
+
+	partition dim_market_region = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="dim_market_region"]}[Data]
+				in
+				    data
+

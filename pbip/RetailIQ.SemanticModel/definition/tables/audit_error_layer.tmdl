@@ -1,0 +1,48 @@
+table audit_error_layer
+	lineageTag: 49c20d4d-a3ba-4005-a2dd-8afb00b12d54
+
+	column layer_order
+		dataType: int64
+		lineageTag: c35cdd54-6ed2-4788-a66e-c61f2102051d
+		summarizeBy: none
+		sourceColumn: layer_order
+
+	column layer
+		dataType: string
+		lineageTag: d3a7bc6f-ccd0-4728-8aa5-ff6b01f02ce7
+		summarizeBy: none
+		sourceColumn: layer
+
+	column question
+		dataType: string
+		lineageTag: eb37ad19-acda-49b0-9f39-cecaab313afa
+		summarizeBy: none
+		sourceColumn: question
+
+	column example
+		dataType: string
+		lineageTag: af5f8144-1931-4946-8dbd-cec0cee87380
+		summarizeBy: none
+		sourceColumn: example
+
+	column metric
+		dataType: string
+		lineageTag: dd97bdfc-07da-45f6-a2a7-8f8da5b92e67
+		summarizeBy: none
+		sourceColumn: metric
+
+	column owner
+		dataType: string
+		lineageTag: 1c622e3c-1a09-46f4-a431-9536eeb55f98
+		summarizeBy: none
+		sourceColumn: owner
+
+	partition audit_error_layer = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="audit_error_layer"]}[Data]
+				in
+				    data
+

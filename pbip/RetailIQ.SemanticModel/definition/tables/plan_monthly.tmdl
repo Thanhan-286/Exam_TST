@@ -1,0 +1,47 @@
+table plan_monthly
+	lineageTag: 0a615887-0387-4a1c-b45c-b27496fcff74
+
+	column month_start
+		dataType: dateTime
+		isHidden
+		lineageTag: 04925572-7405-4d2a-a0a0-7fceb02a56b4
+		summarizeBy: none
+		sourceColumn: month_start
+
+	column market_region
+		dataType: string
+		isHidden
+		lineageTag: aae6a160-69e0-433d-9b78-fca355ccad45
+		summarizeBy: none
+		sourceColumn: market_region
+
+	column category_code
+		dataType: string
+		isHidden
+		lineageTag: 294167d6-47ac-4157-93d7-9023f46cd1c0
+		summarizeBy: none
+		sourceColumn: category_code
+
+	column category_name
+		dataType: string
+		isHidden
+		lineageTag: 09885ef2-c7b3-415a-aaf2-be9942e43772
+		summarizeBy: none
+		sourceColumn: category_name
+
+	column target_revenue
+		dataType: decimal
+		isHidden
+		lineageTag: 6b51db41-eb02-4843-b388-72959f8aaddf
+		summarizeBy: none
+		sourceColumn: target_revenue
+
+	partition plan_monthly = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="plan_monthly"]}[Data]
+				in
+				    data
+

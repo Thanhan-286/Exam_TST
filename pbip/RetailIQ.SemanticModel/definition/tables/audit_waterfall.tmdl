@@ -1,0 +1,42 @@
+table audit_waterfall
+	lineageTag: cf122d60-bed1-4134-9092-9aaf0f5dabc7
+
+	column step_order
+		dataType: int64
+		lineageTag: 2c9b07e3-7725-4549-b13e-8eaac17c5f22
+		summarizeBy: none
+		sourceColumn: step_order
+
+	column step_code
+		dataType: string
+		lineageTag: cbfb10ba-bf9c-4253-9c1e-b81ac6e74e5c
+		summarizeBy: none
+		sourceColumn: step_code
+
+	column step_name
+		dataType: string
+		lineageTag: 2bcb7dbb-e6f4-4714-b0db-7c4f92a86e78
+		summarizeBy: none
+		sourceColumn: step_name
+
+	column amount
+		dataType: decimal
+		lineageTag: 039c2790-cde8-4e3e-83ad-844efcc66da8
+		summarizeBy: none
+		sourceColumn: amount
+
+	column is_total
+		dataType: boolean
+		lineageTag: 3cb892ff-f570-465d-ac33-ef4a6bc1bd1b
+		summarizeBy: none
+		sourceColumn: is_total
+
+	partition audit_waterfall = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="audit_waterfall"]}[Data]
+				in
+				    data
+

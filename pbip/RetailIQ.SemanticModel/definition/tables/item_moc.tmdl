@@ -1,0 +1,98 @@
+table item_moc
+	lineageTag: 171a4d01-9485-41da-a98e-ff4807c85942
+
+	measure MOC = VAR OnHand = SUM ( item_moc[on_hand_eom] ) VAR Sold6M = SUM ( item_moc[sold_6m] ) RETURN DIVIDE ( OnHand, DIVIDE ( Sold6M, 6 ) )
+		formatString: 0.0 "tháng"
+		lineageTag: 7af2252c-136c-436c-a9a1-7c4867472ecf
+
+	measure 'Slow Heavy Value' = CALCULATE ( SUM ( item_moc[inv_value_eom] ), item_moc[is_slow_heavy] = TRUE )
+		formatString: #,0
+		lineageTag: d745b8f9-41f3-4ce9-9b1a-c768eab93356
+
+	measure 'Slow Heavy Count' = CALCULATE ( COUNTROWS ( item_moc ), item_moc[is_slow_heavy] = TRUE )
+		formatString: #,0
+		lineageTag: aafd3e3b-dff1-43e9-8315-18e7c3575723
+
+	measure 'Slow Heavy Pct' = DIVIDE ( [Slow Heavy Value], CALCULATE ( [Slow Heavy Value], REMOVEFILTERS ( item_moc ) ) )
+		formatString: 0.00%
+		lineageTag: 90a678ae-28b2-4afd-ba3e-f237d18cfbca
+
+	measure 'SlowHeavy Label' = IF ( SELECTEDVALUE ( item_moc[is_slow_heavy] ) = TRUE, SELECTEDVALUE ( item_moc[item_code] ), BLANK () )
+		lineageTag: 21013b7d-e4e1-4331-b130-7e3156ad8d3d
+
+	column item_code
+		dataType: string
+		isHidden
+		lineageTag: 8282843b-00e0-46fd-aa6e-5c0faee22e31
+		summarizeBy: none
+		sourceColumn: item_code
+
+	column item_name
+		dataType: string
+		lineageTag: c6645c84-79a9-49b2-93f4-e180178a2e70
+		summarizeBy: none
+		sourceColumn: item_name
+
+	column category_name
+		dataType: string
+		isHidden
+		lineageTag: ebf91f78-2589-46df-9a37-9ed4b89bf721
+		summarizeBy: none
+		sourceColumn: category_name
+
+	column abc_class
+		dataType: string
+		lineageTag: ffc33668-6368-40bb-b85f-d3d6bb117c9d
+		summarizeBy: none
+		sourceColumn: abc_class
+
+	column item_status
+		dataType: string
+		lineageTag: 88665457-150f-48ee-82a4-9915a1ee5a52
+		summarizeBy: none
+		sourceColumn: item_status
+
+	column on_hand_eom
+		dataType: decimal
+		isHidden
+		lineageTag: 6029f19c-f37f-4a18-b5b2-9c08350ae702
+		summarizeBy: none
+		sourceColumn: on_hand_eom
+
+	column inv_value_eom
+		dataType: decimal
+		isHidden
+		lineageTag: c2af212e-25de-498f-a775-00d27a1f3131
+		summarizeBy: none
+		sourceColumn: inv_value_eom
+
+	column sold_6m
+		dataType: decimal
+		isHidden
+		lineageTag: ba0e9fce-191b-4ae7-93e1-aeead2ca0b76
+		summarizeBy: none
+		sourceColumn: sold_6m
+
+	column median_inv_value
+		dataType: double
+		isHidden
+		lineageTag: 4bf0d419-2786-423f-9787-6c79aa4c00ad
+		summarizeBy: none
+		sourceColumn: median_inv_value
+
+	column is_slow_heavy
+		dataType: boolean
+		lineageTag: 077a34d3-6b9c-4453-b92e-49248ad1d614
+		summarizeBy: none
+		sourceColumn: is_slow_heavy
+
+	partition item_moc = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="item_moc"]}[Data],
+				    removed = Table.RemoveColumns(data, {"moc"}, MissingField.Ignore)
+				in
+				    removed
+

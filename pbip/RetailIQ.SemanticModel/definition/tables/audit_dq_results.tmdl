@@ -1,0 +1,49 @@
+table audit_dq_results
+	lineageTag: 75a012f4-fefd-4d8b-b784-684ad8ca1574
+
+	column id
+		dataType: int64
+		isHidden
+		lineageTag: 247abc8e-22ac-40c8-ab4d-0604b54d30bc
+		summarizeBy: none
+		sourceColumn: id
+
+	column rule_code
+		dataType: string
+		lineageTag: 3c9a77cd-2de7-4b06-bbb7-6d83d3103722
+		summarizeBy: none
+		sourceColumn: rule_code
+
+	column src_row_index
+		dataType: int64
+		lineageTag: 8f1ae346-c136-49a5-a114-1f048662e9a8
+		summarizeBy: none
+		sourceColumn: src_row_index
+
+	column blocked
+		dataType: boolean
+		lineageTag: 278198e9-d0fc-475b-9850-0b28101b4a1b
+		summarizeBy: none
+		sourceColumn: blocked
+
+	column pg_error
+		dataType: string
+		lineageTag: a7541050-52b2-496a-ab02-1d54da304395
+		summarizeBy: none
+		sourceColumn: pg_error
+
+	column tested_at
+		dataType: dateTime
+		lineageTag: 4e2e9b8f-f054-47a0-8287-25739f54378b
+		summarizeBy: none
+		sourceColumn: tested_at
+
+	partition audit_dq_results = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="audit_dq_results"]}[Data]
+				in
+				    data
+

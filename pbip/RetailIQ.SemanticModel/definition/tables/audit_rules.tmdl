@@ -1,0 +1,42 @@
+table audit_rules
+	lineageTag: d59417c7-c307-48f9-87d4-81ef9747a93e
+
+	column rule_code
+		dataType: string
+		lineageTag: 6865a6d0-f03d-4c7c-8ec4-c9636b263c20
+		summarizeBy: none
+		sourceColumn: rule_code
+
+	column severity
+		dataType: string
+		lineageTag: b4a83c74-4ac9-433c-9317-41e6c052d25d
+		summarizeBy: none
+		sourceColumn: severity
+
+	column description
+		dataType: string
+		lineageTag: a8613f99-a22e-442a-802c-fd40cf7c0d93
+		summarizeBy: none
+		sourceColumn: description
+
+	column issue_ref
+		dataType: int64
+		lineageTag: 95d05993-2fdc-4793-a7e9-a10accf8008d
+		summarizeBy: none
+		sourceColumn: issue_ref
+
+	column enforceable_in_db
+		dataType: boolean
+		lineageTag: 6588c3f4-52de-4ca5-b188-edbcac5125e8
+		summarizeBy: none
+		sourceColumn: enforceable_in_db
+
+	partition audit_rules = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="audit_rules"]}[Data]
+				in
+				    data
+

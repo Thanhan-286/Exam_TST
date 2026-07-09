@@ -1,0 +1,37 @@
+table dim_warehouse
+	lineageTag: 5013a477-957f-433b-a6e8-d3f76abc9d3e
+
+	column warehouse_code
+		dataType: string
+		isHidden
+		lineageTag: 0f461163-ba52-4405-8c05-8b318f791065
+		summarizeBy: none
+		sourceColumn: warehouse_code
+
+	column warehouse_name
+		dataType: string
+		lineageTag: da9254a3-3670-49ed-ab97-1d35c1185e0e
+		summarizeBy: none
+		sourceColumn: warehouse_name
+
+	column warehouse_region
+		dataType: string
+		lineageTag: 4dd0735a-043d-47e5-a7fb-88ab291e07f5
+		summarizeBy: none
+		sourceColumn: warehouse_region
+
+	column warehouse_status
+		dataType: string
+		lineageTag: 2a30359d-18fc-4e47-9ad0-65a1d4a01151
+		summarizeBy: none
+		sourceColumn: warehouse_status
+
+	partition dim_warehouse = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("aws-0-ap-southeast-1.pooler.supabase.com:5432", "postgres"),
+				    data = Source{[Schema="mart",Item="dim_warehouse"]}[Data]
+				in
+				    data
+

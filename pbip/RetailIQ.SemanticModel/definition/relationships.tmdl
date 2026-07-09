@@ -1,0 +1,62 @@
+relationship R1_sales_month
+	fromColumn: fact_sales.month_start
+	toColumn: dim_month.month_start
+
+relationship R2_sales_customer
+	fromColumn: fact_sales.customer_code
+	toColumn: dim_customer.customer_code
+
+relationship R3_sales_product
+	fromColumn: fact_sales.item_code
+	toColumn: dim_product.item_code
+
+relationship R4_sales_warehouse
+	fromColumn: fact_sales.warehouse_code
+	toColumn: dim_warehouse.warehouse_code
+
+relationship R5_customer_region
+	fromColumn: dim_customer.region
+	toColumn: dim_market_region.market_region
+
+relationship R6_product_category
+	fromColumn: dim_product.category_code
+	toColumn: dim_category.category_code
+
+relationship R7_plan_month
+	fromColumn: plan_monthly.month_start
+	toColumn: dim_month.month_start
+
+relationship R8_plan_region
+	fromColumn: plan_monthly.market_region
+	toColumn: dim_market_region.market_region
+
+relationship R9_plan_category
+	fromColumn: plan_monthly.category_code
+	toColumn: dim_category.category_code
+
+relationship R10_inv_month
+	fromColumn: fact_inventory.month_start
+	toColumn: dim_month.month_start
+
+relationship R11_inv_product
+	fromColumn: fact_inventory.item_code
+	toColumn: dim_product.item_code
+
+relationship R12_inv_warehouse
+	fromColumn: fact_inventory.warehouse_code
+	toColumn: dim_warehouse.warehouse_code
+
+relationship R13_moc_product
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: item_moc.item_code
+	toColumn: dim_product.item_code
+
+relationship R14_dqsales_warehouse
+	fromColumn: dq_fact_sales.warehouse_code
+	toColumn: dim_warehouse.warehouse_code
+
+relationship R15_dqsales_month
+	fromColumn: dq_fact_sales.month_start
+	toColumn: dim_month.month_start
+

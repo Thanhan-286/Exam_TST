@@ -1,0 +1,22 @@
+# Credential
+.env
+*.pem
+*.crt
+
+# Power BI — cache & thiết lập cục bộ, KHÔNG commit
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+**/cache.abf
+*.pbix
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Dữ liệu nguồn: commit vì là case study, bỏ comment nếu là dữ liệu thật
+# data/*.xlsx
+
+# OS
+.DS_Store
+Thumbs.db
