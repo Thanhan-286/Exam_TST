@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { Component, Fragment, useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { DataProvider, useData } from './state/DataContext';
 import { cssVars, dark, light, ACCENT, ALERT_HIGH, ALERT_MID, DQ_FAMILY, PV_FAMILY, SERIES } from './theme/tokens';
 import * as M from './lib/measures';
@@ -1299,10 +1299,43 @@ function DevLab() {
   );
 }
 
+class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  state = { error: null as Error | null };
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+  componentDidCatch(error: Error) {
+    // Lộ lỗi ra console để debug trên Vercel
+    console.error('App crash:', error);
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{ padding: 32, fontFamily: 'system-ui, sans-serif', color: '#1c2420' }}>
+          <h2 style={{ color: '#c0453f' }}>Ứng dụng gặp lỗi khi render</h2>
+          <pre
+            style={{
+              whiteSpace: 'pre-wrap', background: '#fde8e8', color: '#8a2b25',
+              padding: 16, borderRadius: 10, fontSize: 13, overflow: 'auto',
+            }}
+          >
+            {this.state.error.message}
+            {'\n\n'}
+            {this.state.error.stack}
+          </pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <DataProvider>
-      <Shell />
-    </DataProvider>
+    <ErrorBoundary>
+      <DataProvider>
+        <Shell />
+      </DataProvider>
+    </ErrorBoundary>
   );
 }
