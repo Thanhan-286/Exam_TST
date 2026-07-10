@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--link,#5c7a15);text-decoration:none}
+  a:hover{filter:brightness(1.15)}
+  input::placeholder{color:var(--muted,#9aa39b)}
+  ::-webkit-scrollbar{width:9px;height:9px}
+  ::-webkit-scrollbar-thumb{background:var(--card-brd,#d6ddd6);border-radius:9px}
+  ::-webkit-scrollbar-track{background:transparent}
+  select{font-family:inherit}
+  body *{transition:background-color .35s ease,border-color .35s ease,color .35s ease,fill .35s ease,stroke .35s ease}
+  @keyframes lux-slide{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+  @keyframes lux-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes lux-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  @keyframes lux-gauge{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}
+  @keyframes lux-pop{0%{opacity:0;transform:scale(.72)}60%{opacity:1;transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+  @keyframes lux-fadein{from{opacity:0}to{opacity:1}}
+</style>
+<script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule="" src="https://cdn.jsdelivr.net/npm/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</helmet>
+
+<div style="{{ shellStyle }}">
+  <div style="{{ appStyle }}">
+
+    <!-- SIDEBAR -->
+    
+
+    <!-- MAIN -->
+    <aside style="{{ asideStyle }}">
+     <div style="{{ asideInner }}">
+      <div style="display:flex;align-items:center;gap:11px;padding:4px 8px 20px 8px">
+        <div style="display:grid;grid-template-columns:repeat(3,6px);gap:3px">
+          <div style="width:6px;height:6px;background:var(--ink);border-radius:2px"></div><div style="width:6px;height:6px;background:#cdee6b;border-radius:2px"></div><div style="width:6px;height:6px;background:var(--ink);border-radius:2px"></div>
+          <div style="width:6px;height:6px;background:#cdee6b;border-radius:2px"></div><div style="width:6px;height:6px;background:var(--ink);border-radius:2px"></div><div style="width:6px;height:6px;background:#bfe3cf;border-radius:2px"></div>
+          <div style="width:6px;height:6px;background:var(--ink);border-radius:2px"></div><div style="width:6px;height:6px;background:#bfe3cf;border-radius:2px"></div><div style="width:6px;height:6px;background:var(--ink);border-radius:2px"></div>
+        </div>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--ink)">TST Com</div>
+        <div style="margin-left:auto;font-size:10px;font-weight:700;color:#5c7a15;background:#eef7cf;padding:2px 7px;border-radius:20px">Report</div>
+      </div>
+
+      <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);padding:6px 10px 4px">ANALYTICS</div>
+      <div onClick="{{ goExec }}" style="{{ execNav }}">
+        <ion-icon name="bar-chart-outline" style="font-size:20px"></ion-icon>
+        <span>Executive Sales</span>
+      </div>
+      <div onClick="{{ goInv }}" style="{{ invNav }}">
+        <ion-icon name="cube-outline" style="font-size:20px"></ion-icon>
+        <span>Inventory &amp; Slow</span>
+      </div>
+      <div onClick="{{ goDq }}" style="{{ dqNav }}">
+        <ion-icon name="shield-checkmark-outline" style="font-size:20px"></ion-icon>
+        <span>Data Quality</span>
+      </div>
+     </div>
+    </aside><sc-if value="{{ showBackdrop }}" hint-placeholder-val="{{ false }}"><div onClick="{{ toggleSidebar }}" style="position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:49"></div></sc-if><main style="flex:1;min-width:0;display:flex;flex-direction:column;color:var(--ink)">
+      <!-- TOPBAR -->
+      <header style="display:flex;align-items:center;gap:14px;padding:{{ headPad }}">
+        <div onClick="{{ toggleSidebar }}" title="Toggle sidebar" style="width:38px;height:38px;border-radius:11px;background:var(--soft2);display:grid;place-items:center;cursor:pointer;flex-shrink:0">
+          <ion-icon name="menu-outline" style="font-size:22px;color:var(--muted2)"></ion-icon>
+        </div>
+        <div>
+          <div style="font-size:{{ titleSize }};font-weight:800;letter-spacing:-.02em">{{ pageTitle }}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">{{ crumb }}</div>
+        </div>
+        <div onClick="{{ openUpload }}" title="Upload data" style="margin-left:auto;display:flex;align-items:center;gap:7px;background:#cdee6b;color:#1c2420;font-weight:700;font-size:12px;padding:9px 14px;border-radius:11px;cursor:pointer;flex-shrink:0"><ion-icon name="cloud-upload-outline" style="font-size:16px"></ion-icon><span>Upload</span></div>
+        <div onClick="{{ toggleTheme }}" title="Toggle theme" style="width:38px;height:38px;border-radius:11px;background:var(--soft2);display:grid;place-items:center;cursor:pointer">
+          <sc-if value="{{ dark }}" hint-placeholder-val="{{ false }}">
+            <ion-icon name="sunny-outline" style="font-size:20px;color:#cdee6b"></ion-icon>
+          </sc-if>
+          <sc-if value="{{ light }}" hint-placeholder-val="{{ true }}">
+            <ion-icon name="moon-outline" style="font-size:19px;color:var(--muted2)"></ion-icon>
+          </sc-if>
+        </div>
+        <div style="position:relative;width:38px;height:38px;border-radius:11px;background:var(--soft2);display:grid;place-items:center;cursor:pointer">
+          <ion-icon name="notifications-outline" style="font-size:19px;color:var(--muted2)"></ion-icon>
+          <span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#f0644a;border:2px solid var(--soft2)"></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding-left:6px">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#cdee6b,#8ccb9d);display:grid;place-items:center;font-weight:800;font-size:13px;color:#28361b">RM</div>
+          <div style="{{ profileText }}"><div style="font-size:13px;font-weight:700">Renata Marchetti</div><div style="font-size:11px;color:var(--muted)">Ops Director</div></div>
+        </div>
+      </header>
+
+      <div style="flex:1;overflow-y:auto;padding:{{ mainPad }}">
+
+        <!-- ============ EXECUTIVE SALES ============ -->
+        <sc-if value="{{ isExec }}" hint-placeholder-val="{{ true }}">
+        <div style="animation:lux-slide .42s cubic-bezier(.22,.61,.36,1);display:flex;flex-direction:column;gap:20px">
+
+          <div style="display:grid;grid-template-columns:{{ col2a }};gap:20px;align-items:start">
+            <!-- LEFT -->
+            <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+              <!-- KPI ROW -->
+              <div style="display:grid;grid-template-columns:{{ kpiGrid }};gap:16px">
+                <sc-for list="{{ execKpis }}" as="k" hint-placeholder-count="4">
+                  <div style="{{ k.card }}" style-hover="transform:scale(1.03);box-shadow:0 14px 34px -14px rgba(0,0,0,.22);position:relative;z-index:2">
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                      <div style="font-size:12px;color:var(--muted2);font-weight:500">{{ k.label }}</div>
+                      <div style="width:32px;height:32px;border-radius:9px;background:{{ k.iconBg }};display:grid;place-items:center">
+                        <ion-icon name="{{ k.icon }}" style="font-size:18px;color:{{ k.iconColor }}"></ion-icon>
+                      </div>
+                    </div>
+                    <div style="font-size:26px;font-weight:800;letter-spacing:-.02em;margin:10px 0 8px">{{ k.value }}</div>
+                    <div style="display:flex;align-items:center;gap:6px">
+                      <span style="{{ k.deltaStyle }}">{{ k.arrow }} {{ k.delta }}</span>
+                      <span style="font-size:11px;color:var(--muted)">{{ k.note }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <!-- REVENUE TREND -->
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                  <div><div style="font-size:15px;font-weight:700">Net Revenue Trend</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Revenue net of returns &amp; discounts ($M)</div></div>
+                  <select value="{{ salesRange }}" onChange="{{ onSalesRange }}" style="color:#5c7a15;font-weight:700;font-size:12px;padding:8px 12px;border-radius:10px;background:#eef7cf;border:none;cursor:pointer">
+                    <option>Last 12 Months</option><option>Last 6 Months</option><option>Last 3 Months</option>
+                  </select>
+                </div>
+                <div style="position:relative;width:100%">
+                  <svg viewBox="0 0 720 250" preserveAspectRatio="none" style="width:100%;height:230px;display:block">
+                    <defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#cdee6b" stop-opacity=".35"></stop><stop offset="100%" stop-color="#cdee6b" stop-opacity="0"></stop></linearGradient></defs>
+                    <sc-for list="{{ yTicks }}" as="t" hint-placeholder-count="5"><line x1="46" y1="{{ t.y }}" x2="704" y2="{{ t.y }}" style="stroke:var(--grid)" stroke-width="1"></line></sc-for>
+                    <path d="{{ areaPath }}" fill="url(#areaGrad)" style="opacity:0;animation:lux-fadein 1.2s ease forwards"></path>
+                    <path d="{{ linePath }}" fill="none" stroke="#a9d64f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:lux-draw 1.15s ease forwards"></path>
+                    <line x1="{{ hx }}" y1="26" x2="{{ hx }}" y2="196" stroke="#c3d98a" stroke-width="1.5" stroke-dasharray="4 4" style="opacity:{{ lineVis }};transition:opacity .18s ease;pointer-events:none"></line>
+                    <circle cx="{{ hx }}" cy="{{ hy }}" r="6" style="fill:var(--card);opacity:{{ lineVis }};transition:opacity .18s ease;pointer-events:none" stroke="#a9d64f" stroke-width="3"></circle>
+                    <sc-for list="{{ linePoints }}" as="pt" hint-placeholder-count="12"><circle cx="{{ pt.x }}" cy="{{ pt.y }}" r="18" fill="transparent" style="cursor:pointer" onMouseEnter="{{ pt.onEnter }}" onMouseLeave="{{ pt.onLeave }}"></circle></sc-for>
+                  </svg>
+                  <div style="position:absolute;pointer-events:none;transform:translate(-50%,-115%);background:var(--tip-bg);color:var(--tip-ink);padding:6px 10px;border-radius:8px;font-size:11px;font-weight:700;white-space:nowrap;opacity:{{ lineVis }};transition:left .12s ease,top .12s ease,opacity .18s ease;left:{{ hLeft }};top:{{ hTop }}">{{ hLabel }}</div>
+                  <div style="position:absolute;top:6px;left:0;height:196px;display:flex;flex-direction:column;justify-content:space-between;font-size:10px;color:var(--muted);padding-right:6px">
+                    <sc-for list="{{ yTicks }}" as="t" hint-placeholder-count="5"><div>{{ t.label }}</div></sc-for>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:6px 4px 0 46px;font-size:10px;color:var(--muted)">
+                  <sc-for list="{{ xLabels }}" as="x" hint-placeholder-count="12"><div>{{ x.label }}</div></sc-for>
+                </div>
+              </div>
+
+              <!-- WAREHOUSE + GROUP -->
+              <div style="display:grid;grid-template-columns:{{ col2b }};gap:20px">
+                <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                  <div style="font-size:15px;font-weight:700;margin-bottom:2px">Revenue by Warehouse</div>
+                  <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Net revenue, current quarter</div>
+                  <div style="display:flex;flex-direction:column;gap:14px">
+                    <sc-for list="{{ whBars }}" as="b" hint-placeholder-count="5">
+                      <div style="padding:5px 8px;margin:-5px -8px;border-radius:10px;cursor:pointer;opacity:{{ b.op }};transition:transform .2s ease,background-color .2s ease,opacity .2s ease" style-hover="transform:scale(1.03);background-color:var(--soft)" onMouseEnter="{{ b.onEnter }}" onMouseLeave="{{ b.onLeave }}">
+                        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span style="font-weight:600">{{ b.label }}</span><span style="color:var(--muted2)">{{ b.value }}</span></div>
+                        <div style="height:9px;background:var(--soft);border-radius:6px;overflow:hidden"><div style="height:100%;border-radius:6px;background:{{ b.color }};width:{{ b.w }};transform-origin:left;animation:lux-grow .9s cubic-bezier(.22,.61,.36,1);cursor:pointer" style-hover="filter:brightness(1.1) saturate(1.15)"></div></div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                  <div style="font-size:15px;font-weight:700;margin-bottom:2px">Revenue by Product Group</div>
+                  <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Share of net revenue</div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:18px">
+                    <div style="position:relative;width:158px;height:158px;flex-shrink:0;animation:lux-pop .8s cubic-bezier(.34,1.4,.64,1)">
+                      <svg viewBox="0 0 180 180" style="width:100%;height:100%;transform:rotate(-90deg)">
+                        <sc-for list="{{ donutSegs }}" as="s" hint-placeholder-count="7"><circle cx="90" cy="90" r="70" fill="none" stroke="{{ s.color }}" stroke-width="{{ s.sw }}" stroke-dasharray="{{ s.dash }}" stroke-dashoffset="{{ s.off }}" style="opacity:{{ s.op }};cursor:pointer;transition:stroke-width .18s ease,opacity .18s ease" onMouseEnter="{{ s.onEnter }}" onMouseLeave="{{ s.onLeave }}"></circle></sc-for>
+                      </svg>
+                      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none"><div style="font-size:11px;color:var(--muted);max-width:96px;text-align:center;line-height:1.2">{{ donutTop }}</div><div style="font-size:18px;font-weight:800">{{ donutBottom }}</div></div>
+                    </div>
+                    <div style="width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px 18px">
+                      <sc-for list="{{ donutSegs }}" as="s" hint-placeholder-count="7">
+                        <div style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;opacity:{{ s.op }};transition:opacity .18s ease" onMouseEnter="{{ s.onEnter }}" onMouseLeave="{{ s.onLeave }}"><span style="width:9px;height:9px;border-radius:3px;flex-shrink:0;background:{{ s.color }}"></span><span style="flex:1;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.label }}</span><span style="font-weight:700">{{ s.pct }}</span></div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="font-size:15px;font-weight:700;margin-bottom:14px">Plan Attainment</div>
+                <div style="position:relative;width:100%;display:flex;justify-content:center">
+                  <svg viewBox="0 0 180 108" style="width:200px;height:120px">
+                    <path d="M18 96 A72 72 0 0 1 162 96" fill="none" style="stroke:var(--grid)" stroke-width="16" stroke-linecap="round"></path>
+                    <path d="M18 96 A72 72 0 0 1 162 96" fill="none" stroke="#cdee6b" stroke-width="16" stroke-linecap="round" stroke-dasharray="{{ gaugeDash }}" style="stroke-dashoffset:200;animation:lux-gauge 1.2s cubic-bezier(.22,.61,.36,1) forwards"></path>
+                  </svg>
+                  <div style="position:absolute;bottom:6px;width:100%;text-align:center"><div style="font-size:28px;font-weight:800">{{ gaugeText }}</div><div style="font-size:11px;color:var(--muted)">of $17.8M target</div></div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px"><span style="{{ okPill }}">On Track · +$0.6M vs plan</span></div>
+              </div>
+
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="margin-bottom:14px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                    <div style="font-size:15px;font-weight:700">{{ rankTitle }}</div>
+                    <div style="display:flex;background:var(--soft);border-radius:9px;padding:3px">
+                      <div onClick="{{ setTop }}" style="{{ topTab }}">Top</div>
+                      <div onClick="{{ setBottom }}" style="{{ botTab }}">Bottom</div>
+                    </div>
+                  </div>
+                  <select value="{{ rankMetric }}" onChange="{{ onRankMetric }}" style="width:100%;background:var(--soft);border:none;color:var(--ink);font-weight:600;font-size:12px;padding:8px 10px;border-radius:9px;cursor:pointer"><option>Revenue</option><option>Margin</option><option>Units</option></select>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:14px">
+                  <sc-for list="{{ rankList }}" as="p" hint-placeholder-count="5">
+                    <div style="padding:5px 8px;margin:-5px -8px;border-radius:10px;cursor:pointer;opacity:{{ p.op }};transition:transform .2s ease,background-color .2s ease,opacity .2s ease" style-hover="transform:scale(1.03);background-color:var(--soft)" onMouseEnter="{{ p.onEnter }}" onMouseLeave="{{ p.onLeave }}">
+                      <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:5px"><span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span><span style="font-weight:700;flex-shrink:0">{{ p.value }}</span></div>
+                      <div style="height:8px;background:var(--soft);border-radius:6px;overflow:hidden"><div style="height:100%;border-radius:6px;background:{{ p.color }};width:{{ p.w }};transform-origin:left;animation:lux-grow .9s cubic-bezier(.22,.61,.36,1);cursor:pointer" style-hover="filter:brightness(1.1) saturate(1.15)"></div></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ============ INVENTORY & SLOW MOVING ============ -->
+        <sc-if value="{{ isInv }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:lux-slide .42s cubic-bezier(.22,.61,.36,1);display:flex;flex-direction:column;gap:20px">
+          <div style="display:grid;grid-template-columns:{{ col2a }};gap:20px;align-items:start">
+            <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+              <div style="display:grid;grid-template-columns:{{ kpiGrid }};gap:16px">
+                <sc-for list="{{ invKpis }}" as="k" hint-placeholder-count="4">
+                  <div style="{{ k.card }}" style-hover="transform:scale(1.03);box-shadow:0 14px 34px -14px rgba(0,0,0,.22);position:relative;z-index:2">
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                      <div style="font-size:12px;color:var(--muted2);font-weight:500">{{ k.label }}</div>
+                      <div style="width:32px;height:32px;border-radius:9px;background:{{ k.iconBg }};display:grid;place-items:center"><ion-icon name="{{ k.icon }}" style="font-size:18px;color:{{ k.iconColor }}"></ion-icon></div>
+                    </div>
+                    <div style="font-size:26px;font-weight:800;letter-spacing:-.02em;margin:10px 0 8px">{{ k.value }}</div>
+                    <div style="display:flex;align-items:center;gap:6px"><span style="{{ k.deltaStyle }}">{{ k.delta }}</span><span style="font-size:11px;color:var(--muted)">{{ k.note }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div><div style="font-size:15px;font-weight:700">Stock Health</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Latest end-of-month valuation · $9.7M on hand</div></div><div style="font-size:12px;color:var(--muted)">June 2026</div></div>
+                <div style="position:relative;margin-bottom:16px">
+                  <div style="display:flex;height:26px;border-radius:8px;overflow:hidden;gap:2px;transform-origin:left;animation:lux-grow .8s cubic-bezier(.22,.61,.36,1)">
+                    <sc-for list="{{ healthSegs }}" as="s" hint-placeholder-count="4"><div style="background:{{ s.color }};width:{{ s.w }};cursor:pointer;opacity:{{ s.op }};transition:filter .2s ease,opacity .2s ease" style-hover="filter:brightness(1.14) saturate(1.1)" onMouseEnter="{{ s.onEnter }}" onMouseLeave="{{ s.onLeave }}"></div></sc-for>
+                  </div>
+                  <sc-if value="{{ healthTipShow }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;bottom:100%;left:{{ healthTipLeft }};transform:translate(-50%,-8px);background:var(--tip-bg);color:var(--tip-ink);padding:5px 11px;border-radius:8px;font-size:11px;font-weight:700;white-space:nowrap;pointer-events:none;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)">{{ healthTipText }}</div></sc-if>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+                  <sc-for list="{{ healthSegs }}" as="s" hint-placeholder-count="4">
+                    <div style="border-left:3px solid {{ s.color }};padding-left:10px"><div style="font-size:11px;color:var(--muted)">{{ s.label }}</div><div style="font-size:19px;font-weight:800">{{ s.pct }}</div><div style="font-size:11px;color:var(--muted2)">{{ s.value }}</div></div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <!-- AGING / SLOW MOVING TABLE -->
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                  <div><div style="font-size:15px;font-weight:700">Slow-Moving &amp; Aging Stock</div><div style="font-size:12px;color:var(--muted);margin-top:2px">High on-hand, no sale in 6+ months · flagged for review</div></div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+                    <select value="{{ invGroup }}" onChange="{{ onInvGroup }}" style="background:#eef7cf;border:none;color:#5c7a15;font-weight:700;font-size:12px;padding:8px 12px;border-radius:10px;cursor:pointer">
+                      <option>All Groups</option><option>Leather &amp; Upholstery</option><option>Carbon Fiber</option><option>Alloy &amp; Metals</option><option>Wood Veneer</option><option>Paint &amp; Coatings</option><option>Glass &amp; Optics</option><option>Fasteners &amp; Trim</option>
+                    </select>
+                    <select value="{{ invWarehouse }}" onChange="{{ onInvWarehouse }}" style="background:var(--soft);border:none;color:var(--ink);font-weight:600;font-size:12px;padding:8px 12px;border-radius:10px;cursor:pointer">
+                      <option>All Warehouses</option><option>Stuttgart DC</option><option>Milan Hub</option><option>Detroit DC</option><option>Shanghai DC</option><option>Dubai Hub</option>
+                    </select>
+                    <select value="{{ invStatus }}" onChange="{{ onInvStatus }}" style="background:var(--soft);border:none;color:var(--ink);font-weight:600;font-size:12px;padding:8px 12px;border-radius:10px;cursor:pointer">
+                      <option>All Status</option><option>Slow</option><option>Dead</option><option>Negative</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="overflow-x:auto">
+                  <table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:640px">
+                    <thead><tr style="text-align:left;color:var(--muted);font-size:11px;font-weight:600">
+                      <th style="padding:0 8px 12px">SKU</th><th style="padding:0 8px 12px">Product</th><th style="padding:0 8px 12px">Warehouse</th><th style="padding:0 8px 12px;text-align:right">On Hand</th><th style="padding:0 8px 12px;text-align:right">Value</th><th style="padding:0 8px 12px;text-align:right">Days No Sale</th><th style="padding:0 8px 12px">Status</th>
+                    </tr></thead>
+                    <tbody>
+                      <sc-for list="{{ agingRows }}" as="r" hint-placeholder-count="6">
+                        <tr style="border-top:1px solid var(--row-brd)">
+                          <td style="padding:12px 8px;font-weight:700;color:var(--link)">{{ r.sku }}</td>
+                          <td style="padding:12px 8px"><div style="font-weight:600">{{ r.name }}</div><div style="font-size:11px;color:var(--muted)">{{ r.group }}</div></td>
+                          <td style="padding:12px 8px;color:var(--muted2)">{{ r.wh }}</td>
+                          <td style="padding:12px 8px;text-align:right;color:var(--muted2)">{{ r.onhand }}</td>
+                          <td style="padding:12px 8px;text-align:right;font-weight:700">{{ r.value }}</td>
+                          <td style="padding:12px 8px;text-align:right;color:var(--muted2)">{{ r.days }}</td>
+                          <td style="padding:12px 8px"><span style="{{ r.badge }}">{{ r.status }}</span></td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="font-size:15px;font-weight:700;margin-bottom:2px">Inventory by Warehouse</div>
+                <div style="font-size:12px;color:var(--muted);margin-bottom:16px">On-hand value ($M)</div>
+                <div style="display:flex;flex-direction:column;gap:14px">
+                  <sc-for list="{{ invWhBars }}" as="b" hint-placeholder-count="5">
+                    <div style="padding:5px 8px;margin:-5px -8px;border-radius:10px;cursor:pointer;opacity:{{ b.op }};transition:transform .2s ease,background-color .2s ease,opacity .2s ease" style-hover="transform:scale(1.03);background-color:var(--soft)" onMouseEnter="{{ b.onEnter }}" onMouseLeave="{{ b.onLeave }}"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span style="font-weight:600">{{ b.label }}</span><span style="color:var(--muted2)">{{ b.value }}</span></div><div style="height:9px;background:var(--soft);border-radius:6px;overflow:hidden"><div style="height:100%;border-radius:6px;background:{{ b.color }};width:{{ b.w }};transform-origin:left;animation:lux-grow .9s cubic-bezier(.22,.61,.36,1);cursor:pointer" style-hover="filter:brightness(1.1) saturate(1.15)"></div></div></div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="font-size:15px;font-weight:700;margin-bottom:14px">Exception Alerts</div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ invAlerts }}" as="a" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:12px;background:{{ a.bg }};border-radius:12px;padding:12px 14px">
+                      <div style="width:36px;height:36px;border-radius:10px;background:#fff;display:grid;place-items:center;font-size:15px;font-weight:800;color:{{ a.color }}">{{ a.icon }}</div>
+                      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#1c2420">{{ a.title }}</div><div style="font-size:11px;color:#5f6b62">{{ a.sub }}</div></div>
+                      <div style="font-size:18px;font-weight:800;color:{{ a.color }}">{{ a.count }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- ============ DATA QUALITY ============ -->
+        <sc-if value="{{ isDq }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:lux-slide .42s cubic-bezier(.22,.61,.36,1);display:flex;flex-direction:column;gap:20px">
+          <div style="display:grid;grid-template-columns:{{ kpiGrid }};gap:16px">
+            <sc-for list="{{ dqKpis }}" as="k" hint-placeholder-count="4">
+              <div style="{{ k.card }}" style-hover="transform:scale(1.03);box-shadow:0 14px 34px -14px rgba(0,0,0,.22);position:relative;z-index:2">
+                <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:12px;color:var(--muted2);font-weight:500">{{ k.label }}</div><div style="width:32px;height:32px;border-radius:9px;background:{{ k.iconBg }};display:grid;place-items:center"><ion-icon name="{{ k.icon }}" style="font-size:18px;color:{{ k.iconColor }}"></ion-icon></div></div>
+                <div style="font-size:26px;font-weight:800;letter-spacing:-.02em;margin:10px 0 8px">{{ k.value }}</div>
+                <div style="font-size:11px;color:var(--muted)">{{ k.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:grid;grid-template-columns:{{ col2dq }};gap:20px;align-items:start">
+            <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);min-width:0;transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                <div><div style="font-size:15px;font-weight:700">Detected Data Issues</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Audit of 48,210 records · rule &amp; remediation per issue</div></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+                  <select value="{{ dqSeverity }}" onChange="{{ onDqSeverity }}" style="background:#eef7cf;border:none;color:#5c7a15;font-weight:700;font-size:12px;padding:8px 12px;border-radius:10px;cursor:pointer">
+                    <option>All Severity</option><option>High</option><option>Medium</option><option>Low</option>
+                  </select>
+                  <select value="{{ dqArea }}" onChange="{{ onDqArea }}" style="background:var(--soft);border:none;color:var(--ink);font-weight:600;font-size:12px;padding:8px 12px;border-radius:10px;cursor:pointer">
+                    <option>All Areas</option><option>Inventory</option><option>Master Data</option><option>Costing</option><option>Transactions</option><option>Lifecycle</option>
+                  </select>
+                  <select value="{{ dqStatus }}" onChange="{{ onDqStatus }}" style="background:var(--soft);border:none;color:var(--ink);font-weight:600;font-size:12px;padding:8px 12px;border-radius:10px;cursor:pointer">
+                    <option>All Status</option><option>Open</option><option>In Review</option><option>In Progress</option><option>Monitoring</option>
+                  </select>
+                </div>
+              </div>
+              <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:660px">
+                  <thead><tr style="text-align:left;color:var(--muted);font-size:11px;font-weight:600">
+                    <th style="padding:0 8px 12px">Issue</th><th style="padding:0 8px 12px">Area</th><th style="padding:0 8px 12px;text-align:right">Records</th><th style="padding:0 8px 12px">Severity</th><th style="padding:0 8px 12px">Detection / Fix Rule</th><th style="padding:0 8px 12px">Status</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ dqRows }}" as="r" hint-placeholder-count="7">
+                      <tr style="border-top:1px solid var(--row-brd);vertical-align:top">
+                        <td style="padding:13px 8px;font-weight:700;max-width:180px">{{ r.issue }}</td>
+                        <td style="padding:13px 8px;color:var(--muted2)">{{ r.area }}</td>
+                        <td style="padding:13px 8px;text-align:right;font-weight:700">{{ r.count }}</td>
+                        <td style="padding:13px 8px"><span style="{{ r.sevStyle }}">{{ r.severity }}</span></td>
+                        <td style="padding:13px 8px;color:var(--muted2);font-size:11.5px;max-width:230px"><code style="font-family:ui-monospace,monospace;background:var(--soft);padding:1px 5px;border-radius:5px;color:var(--link)">{{ r.rule }}</code></td>
+                        <td style="padding:13px 8px"><span style="{{ r.statusStyle }}">{{ r.status }}</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="font-size:15px;font-weight:700;margin-bottom:2px">Flagged by Severity</div>
+                <div style="font-size:12px;color:var(--muted);margin-bottom:16px">275 records across 7 issue types</div>
+                <div style="display:flex;flex-direction:column;gap:14px">
+                  <sc-for list="{{ sevBars }}" as="b" hint-placeholder-count="3">
+                    <div style="padding:5px 8px;margin:-5px -8px;border-radius:10px;cursor:pointer;opacity:{{ b.op }};transition:transform .2s ease,background-color .2s ease,opacity .2s ease" style-hover="transform:scale(1.03);background-color:var(--soft)" onMouseEnter="{{ b.onEnter }}" onMouseLeave="{{ b.onLeave }}"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span style="font-weight:600">{{ b.label }}</span><span style="color:var(--muted2)">{{ b.value }} records</span></div><div style="height:9px;background:var(--soft);border-radius:6px;overflow:hidden"><div style="height:100%;border-radius:6px;background:{{ b.color }};width:{{ b.w }};transform-origin:left;animation:lux-grow .9s cubic-bezier(.22,.61,.36,1);cursor:pointer" style-hover="filter:brightness(1.1) saturate(1.15)"></div></div></div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="border:1px solid var(--card-brd);border-radius:20px;padding:20px;background:var(--card);transition:transform .25s ease,box-shadow .25s ease" style-hover="transform:scale(1.015);box-shadow:0 16px 40px -16px rgba(0,0,0,.20);position:relative;z-index:2">
+                <div style="font-size:15px;font-weight:700;margin-bottom:2px">Reconciliation Checklist</div>
+                <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Month-end close controls</div>
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <sc-for list="{{ checklist }}" as="c" hint-placeholder-count="6">
+                    <div style="display:flex;align-items:center;gap:11px;padding:10px 0;border-top:1px solid var(--row-brd)">
+                      <div style="width:22px;height:22px;border-radius:7px;background:{{ c.mark }};display:grid;place-items:center;flex-shrink:0;color:#fff;font-size:13px;font-weight:800">{{ c.glyph }}</div>
+                      <div style="flex:1"><div style="font-size:12.5px;font-weight:600">{{ c.check }}</div><div style="font-size:11px;color:var(--muted)">Target {{ c.target }}</div></div>
+                      <div style="font-size:12.5px;font-weight:700;color:{{ c.color }}">{{ c.result }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+    </main>
+  </div>
+  <sc-if value="{{ uploadOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeUpload }}" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px">
+      <div onClick="{{ stop }}" style="background:var(--card);color:var(--ink);border-radius:20px;padding:24px;width:min(680px,100%);max-height:85vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.45)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div style="font-size:18px;font-weight:800">Upload Inventory Data</div>
+          <div onClick="{{ closeUpload }}" style="cursor:pointer;color:var(--muted2);font-size:22px;line-height:1">&#10005;</div>
+        </div>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed var(--card-brd);border-radius:14px;padding:28px;cursor:pointer;text-align:center">
+          <ion-icon name="cloud-upload-outline" style="font-size:34px;color:#8bbf3a"></ion-icon>
+          <div style="font-weight:700;font-size:14px">Choose an Excel file</div>
+          <div style="font-size:12px;color:var(--muted)">Supports .xlsx, .xls, .csv &middot; first sheet is read</div>
+          <input type="file" accept=".xlsx,.xls,.csv" onChange="{{ onFile }}" style="display:none">
+        </label>
+        <sc-if value="{{ hasUpload }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px">
+            <div style="font-size:13px;color:var(--muted);margin-bottom:8px">{{ uploadName }} &middot; {{ uploadCount }} rows &middot; preview</div>
+            <div style="overflow:auto;border:1px solid var(--card-brd);border-radius:12px;max-height:280px">
+              <table style="width:100%;border-collapse:collapse;font-size:12px">
+                <thead><tr>
+                  <sc-for list="{{ uploadHeaders }}" as="h" hint-placeholder-count="5"><th style="text-align:left;padding:8px 10px;background:var(--soft);color:var(--muted2);white-space:nowrap;position:sticky;top:0">{{ h }}</th></sc-for>
+                </tr></thead>
+                <tbody>
+                  <sc-for list="{{ previewRows }}" as="row" hint-placeholder-count="4">
+                    <tr style="border-top:1px solid var(--row-brd)">
+                      <sc-for list="{{ row }}" as="cell" hint-placeholder-count="5"><td style="padding:8px 10px;white-space:nowrap">{{ cell }}</td></sc-for>
+                    </tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+              <div onClick="{{ closeUpload }}" style="padding:9px 16px;border-radius:10px;background:var(--soft);color:var(--ink);font-weight:700;font-size:13px;cursor:pointer">Cancel</div>
+              <div onClick="{{ applyUpload }}" style="padding:9px 16px;border-radius:10px;background:#cdee6b;color:#1c2420;font-weight:700;font-size:13px;cursor:pointer">Apply to Inventory table</div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { screen:'exec', salesRange:'Last 12 Months', topMode:'top', invGroup:'All Groups', dqSeverity:'All Severity', dark:false, progress:0, lineHover:null, donutHover:null, sidebarOpen:true, healthHover:null, barHover:null, isMobile:false, region:'All Regions', rankMetric:'Revenue', invWarehouse:'All Warehouses', invStatus:'All Status', dqArea:'All Areas', dqStatus:'All Status', uploadOpen:false, uploadRows:null, uploadHeaders:null, uploadName:'', uploadCount:0, appliedRows:null };
+
+  componentDidMount(){
+    try{ if(localStorage.getItem('lustre-theme')==='dark') this.setState({dark:true}); }catch(e){}
+    this._onResize=()=>{ const m=window.innerWidth<=640; if(m!==this.state.isMobile) this.setState({isMobile:m, sidebarOpen:!m}); };
+    window.addEventListener('resize',this._onResize);
+    this._onResize();
+    this.startCount();
+  }
+  componentWillUnmount(){ if(this._raf) cancelAnimationFrame(this._raf); if(this._onResize) window.removeEventListener('resize',this._onResize); }
+  startCount(){
+    if(this._raf) cancelAnimationFrame(this._raf);
+    const dur=1050, t0=performance.now();
+    const tick=(now)=>{ const t=Math.min(1,(now-t0)/dur); const e=1-Math.pow(1-t,3); this.setState({progress:e}); if(t<1) this._raf=requestAnimationFrame(tick); };
+    this.setState({progress:0}); this._raf=requestAnimationFrame(tick);
+  }
+  fmtNum(n,fmt,p){ const v=n*p; if(fmt==='money') return '$'+v.toFixed(1)+'M'; if(fmt==='pct') return v.toFixed(1)+'%'; if(fmt==='comma') return Math.round(v).toLocaleString(); return Math.round(v).toString(); }
+  onFile(e){ const f=e.target.files&&e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=(ev)=>{ try{ const wb=XLSX.read(ev.target.result,{type:'array'}); const ws=wb.Sheets[wb.SheetNames[0]]; const rows=XLSX.utils.sheet_to_json(ws,{defval:''}); const headers=rows.length?Object.keys(rows[0]):[]; this.setState({uploadRows:rows,uploadHeaders:headers,uploadName:f.name,uploadCount:rows.length}); }catch(err){ this.setState({uploadName:'Could not read file: '+err.message,uploadRows:null,uploadHeaders:null}); } }; rd.readAsArrayBuffer(f); }
+  applyUpload(){ const rows=this.state.uploadRows||[]; const g=(o,keys)=>{ for(const k of Object.keys(o)){ if(keys.includes(k.toLowerCase().trim())) return o[k]; } return ''; }; const mapped=rows.map(o=>{ const st=(g(o,['status'])||'').toString(); const kind=/neg/i.test(st)?'negative':/dead/i.test(st)?'dead':/excess/i.test(st)?'excess':'slow'; return { sku:(g(o,['sku','code'])||'—').toString(), name:(g(o,['product','name','item'])||'—').toString(), group:(g(o,['group','category'])||'—').toString(), wh:(g(o,['warehouse','wh','location'])||'—').toString(), onhand:(g(o,['on hand','onhand','qty','quantity'])||'').toString(), value:(g(o,['value','amount'])||'').toString(), days:(g(o,['days no sale','days','age'])||'').toString(), status:st||'Slow', kind }; }); this.setState({appliedRows:mapped, uploadOpen:false}); }
+  toggleTheme(){
+    this.setState(s=>{ const d=!s.dark; try{localStorage.setItem('lustre-theme',d?'dark':'light');}catch(e){} return {dark:d}; });
+  }
+
+  // ---------- chart helpers ----------
+  smoothPath(pts){
+    if(pts.length<2) return '';
+    let d=`M ${pts[0][0]} ${pts[0][1]}`;
+    for(let i=0;i<pts.length-1;i++){
+      const p0=pts[i-1]||pts[i], p1=pts[i], p2=pts[i+1], p3=pts[i+2]||p2;
+      const c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
+      const c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
+      d+=` C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2[0]} ${p2[1]}`;
+    }
+    return d;
+  }
+  buildLine(labels, values, ymax){
+    const L=46, R=704, T=26, B=196;
+    const n=values.length;
+    const x=i=> n===1 ? (L+R)/2 : L+(R-L)*i/(n-1);
+    const y=v=> B-(B-T)*(v/ymax);
+    const pts=values.map((v,i)=>[+x(i).toFixed(1), +y(v).toFixed(1)]);
+    const line=this.smoothPath(pts);
+    const area=`${line} L ${pts[n-1][0]} ${B} L ${pts[0][0]} ${B} Z`;
+    const ticks=[]; const steps=4;
+    for(let i=0;i<=steps;i++){ const val=ymax*(steps-i)/steps; ticks.push({y:(T+(B-T)*i/steps).toFixed(1), label:'$'+val.toFixed(0)+'M'}); }
+    const xLabels=labels.map((l,i)=>({label:l, x:x(i)}));
+    const hi=n-1;
+    return { linePath:line, areaPath:area, yTicks:ticks, xLabels, pts:pts, vals:values, labs:labels, n:n,
+      hx:pts[hi][0], hy:pts[hi][1], hLeft:(pts[hi][0]/720*100).toFixed(1)+'%', hTop:(pts[hi][1]/250*100).toFixed(1)+'%',
+      hLabel:'$'+values[hi].toFixed(1)+'M' };
+  }
+  buildDonut(items){
+    const r=70, C=2*Math.PI*r, total=items.reduce((s,i)=>s+i.v,0); let cum=0;
+    return items.map(it=>{ const frac=it.v/total, len=frac*C;
+      const seg={label:it.label,color:it.color,value:it.value||'',pct:Math.round(frac*100)+'%',dash:`${len.toFixed(2)} ${(C-len).toFixed(2)}`,off:(-cum).toFixed(2)};
+      cum+=len; return seg; });
+  }
+  bars(items){ const max=Math.max(...items.map(i=>i.v)); return items.map(i=>({...i,w:(i.v/max*100).toFixed(1)+'%'})); }
+
+  // ---------- styles ----------
+  navStyle(active){
+    return `display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-size:14px;cursor:pointer;`+
+      (active ? `background:var(--accent);color:#1c2420;font-weight:700` : `background:transparent;color:var(--muted2);font-weight:500`);
+  }
+  deltaPill(dir){
+    const D=this.state.dark, up=dir==='up';
+    const g = D?['rgba(47,125,67,.20)','#7fd39a']:['#e7f6ec','#2f7d43'];
+    const r = D?['rgba(192,69,63,.20)','#e59a95']:['#fde8e8','#c0453f'];
+    const [bg,c]=up?g:r;
+    return `display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:${bg};color:${c}`;
+  }
+  badge(kind){
+    const D=this.state.dark;
+    const L={healthy:['#e7f6ec','#2f7d43'],slow:['#fdf3d6','#9a7414'],dead:['#fde8e8','#c0453f'],negative:['#fbe3e0','#b53229'],excess:['#eef7cf','#5c7a15'],high:['#fde8e8','#c0453f'],medium:['#fdf3d6','#9a7414'],low:['#e7f6ec','#2f7d43'],open:['#fde8e8','#c0453f'],review:['#fdf3d6','#9a7414'],progress:['#e6f1f2','#3a7076'],monitor:['#eef1ec','#6f776f']};
+    const K={healthy:['rgba(47,125,67,.20)','#7fd39a'],slow:['rgba(201,154,18,.20)','#e6c766'],dead:['rgba(192,69,63,.20)','#e59a95'],negative:['rgba(192,69,63,.24)','#ef9d97'],excess:['rgba(92,122,21,.28)','#c3e66b'],high:['rgba(192,69,63,.20)','#e59a95'],medium:['rgba(201,154,18,.20)','#e6c766'],low:['rgba(47,125,67,.20)','#7fd39a'],open:['rgba(192,69,63,.20)','#e59a95'],review:['rgba(201,154,18,.20)','#e6c766'],progress:['rgba(58,112,118,.24)','#7fc3cb'],monitor:['rgba(255,255,255,.08)','#9aa89c']};
+    const [bg,c]=(D?K:L)[kind]||['#eef1ec','#6f776f'];
+    return `display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:${bg};color:${c}`;
+  }
+  kpiCard(hi){ return `border:1px solid ${hi?'var(--kpi-hi-brd)':'var(--card-brd)'};border-radius:20px;padding:18px;transition:transform .25s ease,box-shadow .25s ease;background:${hi?'var(--kpi-hi-bg)':'var(--card)'}`; }
+
+  renderVals(){
+    const s=this.state, D=s.dark, p=(s.progress==null?1:s.progress);
+    const C=['#bfe3cf','#a3d7b3','#8ccb9d','#d9ee85','#cdee6b','#e6f4ab','#9ed0ac'];
+    const titles={exec:['Executive Sales','Dashboard · Executive Sales'],inv:['Inventory & Slow Moving','Dashboard · Inventory'],dq:['Data Quality','Dashboard · Data Quality & Reconciliation']};
+
+    const light={bg:'#e7efe8',card:'#ffffff',cardBrd:'#eef2ee',ink:'#1c2420',muted:'#9aa39b',muted2:'#6f776f',soft:'#f2f5f1',soft2:'#f3f6f2',grid:'#eef2ee',sideBrd:'#eef2ee',rowBrd:'#f1f4f0',kpiHiBg:'linear-gradient(160deg,#f4fadf,#eef7cf)',kpiHiBrd:'#dce4b8',link:'#5c7a15',tipBg:'#1c2420',tipInk:'#ffffff'};
+    const dk={bg:'#0b0f0c',card:'#141a15',cardBrd:'#232c24',ink:'#eef2ea',muted:'#7f8a80',muted2:'#9aa89c',soft:'#1c241d',soft2:'#1c241d',grid:'#242e25',sideBrd:'#1e261f',rowBrd:'#232c24',kpiHiBg:'linear-gradient(160deg,#22331b,#182015)',kpiHiBrd:'#3a4a2b',link:'#a9d64f',tipBg:'#2b3a30',tipInk:'#eef2ea'};
+    const t=D?dk:light;
+    const shellStyle=`min-height:100vh;padding:${s.isMobile?'0':'18px'};overflow-x:auto;background:${t.bg};color:${t.ink};`+
+      `--card:${t.card};--card-brd:${t.cardBrd};--ink:${t.ink};--muted:${t.muted};--muted2:${t.muted2};--soft:${t.soft};--soft2:${t.soft2};`+
+      `--grid:${t.grid};--side-brd:${t.sideBrd};--row-brd:${t.rowBrd};--kpi-hi-bg:${t.kpiHiBg};--kpi-hi-brd:${t.kpiHiBrd};--link:${t.link};--tip-bg:${t.tipBg};--tip-ink:${t.tipInk};--accent:#cdee6b`;
+
+    // ----- executive -----
+    const regionMap={'All Regions':{rev:18.4,whs:null},'EMEA':{rev:11.4,whs:['Stuttgart DC','Milan Hub','Dubai Hub']},'Americas':{rev:3.8,whs:['Detroit DC']},'APAC':{rev:3.2,whs:['Shanghai DC']}};
+    const rg=regionMap[s.region]||regionMap['All Regions'];
+    const netRev=rg.rev, rScale=netRev/18.4;
+    const execKpis=[
+      {label:'Net Revenue',n:netRev,fmt:'money',delta:'6.2%',dir:'up',arrow:'↑',note:'vs last month',icon:'trending-up-outline',iconBg:'#eef7cf',iconColor:'#4a6b1f',hi:true},
+      {label:'Gross Margin',n:34.8,fmt:'pct',delta:'1.4%',dir:'up',arrow:'↑',note:'vs last month',icon:'pie-chart-outline',iconBg:'#e5f2ea',iconColor:'#2f7d43',hi:false},
+      {label:'Fill Rate',n:96.2,fmt:'pct',delta:'0.8%',dir:'down',arrow:'↓',note:'vs last month',icon:'checkmark-circle-outline',iconBg:'#e5f2ea',iconColor:'#2f7d43',hi:false},
+      {label:'Plan Attainment',n:103.5,fmt:'pct',delta:'3.5%',dir:'up',arrow:'↑',note:'vs target',icon:'locate-outline',iconBg:'#eef7cf',iconColor:'#4a6b1f',hi:false},
+    ].map(k=>({...k,value:this.fmtNum(k.n,k.fmt,p),card:this.kpiCard(k.hi),deltaStyle:this.deltaPill(k.dir)}));
+
+    const allLabels=['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+    const allVals=[12.1,13.0,12.6,13.8,14.4,13.9,15.2,15.6,16.1,15.7,17.2,18.4].map(v=>+(v*rScale).toFixed(2));
+    let cut = s.salesRange==='Last 3 Months'?3 : s.salesRange==='Last 6 Months'?6 : 12;
+    const _shownV=allVals.slice(-cut);
+    const _ymax=Math.max(5,Math.ceil(Math.max(..._shownV)/5)*5);
+    const line=this.buildLine(allLabels.slice(-cut), _shownV, _ymax);
+    const ai=(s.lineHover!=null && s.lineHover<line.n)?s.lineHover:line.n-1;
+    const apt=line.pts[ai];
+    const marker={ hx:apt[0], hy:apt[1], hLeft:(apt[0]/720*100).toFixed(1)+'%', hTop:(apt[1]/250*100).toFixed(1)+'%', hLabel:line.labs[ai]+' · $'+line.vals[ai].toFixed(1)+'M' };
+    const linePoints=line.pts.map((pt,i)=>({ x:pt[0], y:pt[1], onEnter:()=>this.setState({lineHover:i}), onLeave:()=>this.setState({lineHover:null}) }));
+
+    let _whData=[
+      {label:'Stuttgart DC',v:4.9,value:'$4.9M',color:'#cdee6b'},
+      {label:'Milan Hub',v:4.1,value:'$4.1M',color:'#a9d64f'},
+      {label:'Detroit DC',v:3.8,value:'$3.8M',color:'#8ccb9d'},
+      {label:'Shanghai DC',v:3.2,value:'$3.2M',color:'#a3d7b3'},
+      {label:'Dubai Hub',v:2.4,value:'$2.4M',color:'#bfe3cf'},
+    ];
+    if(rg.whs) _whData=_whData.filter(w=>rg.whs.includes(w.label));
+    const whBars=this.bars(_whData);
+    const groupDonut=this.buildDonut([
+      {label:'Leather & Upholstery',v:28,color:C[4]},{label:'Carbon Fiber',v:22,color:C[3]},
+      {label:'Alloy & Metals',v:18,color:C[2]},{label:'Wood Veneer',v:12,color:C[1]},
+      {label:'Paint & Coatings',v:9,color:C[0]},{label:'Glass & Optics',v:7,color:C[6]},
+      {label:'Fasteners & Trim',v:4,color:C[5]},
+    ].map(g=>({...g,value:this.fmtNum(g.v/100*netRev,'money',1)})));
+    const dh=s.donutHover;
+    const donutSegs=groupDonut.map((seg,i)=>({ ...seg, sw: dh===i?28:22, op: dh==null?1:(dh===i?1:0.38), onEnter:()=>this.setState({donutHover:i}), onLeave:()=>this.setState({donutHover:null}) }));
+    const donutTop = dh!=null ? groupDonut[dh].label+' · '+groupDonut[dh].pct : 'Net Rev';
+    const donutBottom = dh!=null ? groupDonut[dh].value : this.fmtNum(netRev,'money',p);
+    const products=[
+      {name:'Nappa Leather Hide (Black)',rev:2.4,margin:42,units:8.2},
+      {name:'Forged Carbon Panel Set',rev:1.9,margin:38,units:3.1},
+      {name:'Machined Alloy Wheel Blank',rev:1.6,margin:29,units:12.4},
+      {name:'Walnut Veneer Dash Kit',rev:1.2,margin:45,units:2.2},
+      {name:'Ceramic Brake Compound',rev:0.9,margin:33,units:5.6},
+      {name:'Vintage Chrome Trim Strip',rev:0.012,margin:12,units:0.4},
+      {name:'Suede Headliner Roll (Beige)',rev:0.018,margin:18,units:0.6},
+      {name:'Analog Clock Bezel',rev:0.021,margin:15,units:0.5},
+      {name:'Wire-Spoke Hub Cap',rev:0.024,margin:20,units:0.7},
+      {name:'Halogen Lens Cover',rev:0.027,margin:22,units:0.9},
+    ];
+    const metric=s.rankMetric||'Revenue';
+    const mkey=metric==='Margin'?'margin':metric==='Units'?'units':'rev';
+    const fmtMetric=(x)=> metric==='Margin'? x+'%' : metric==='Units'? x.toFixed(1)+'K' : (x>=1?'$'+x.toFixed(1)+'M':'$'+Math.round(x*1000)+'K');
+    const isTop=s.topMode==='top';
+    const sortedP=[...products].sort((a,b)=>b[mkey]-a[mkey]);
+    const chosen=isTop?sortedP.slice(0,5):sortedP.slice(-5).reverse();
+    const rankList=this.bars(chosen.map(pr=>({name:pr.name, v:pr[mkey], value:fmtMetric(pr[mkey])}))).map(pr=>({...pr,color:isTop?'#cdee6b':'#e0a3a3'}));
+
+    // ----- inventory -----
+    const invKpis=[
+      {label:'Inventory Value (EOM)',n:9.7,fmt:'money',delta:'—',note:'as of Jun 2026',icon:'cube-outline',iconBg:'#eef7cf',iconColor:'#4a6b1f',hi:true,deltaStyle:'display:none'},
+      {label:'Slow-Moving Value',n:1.8,fmt:'money',delta:'18.6% of stock',note:'',icon:'time-outline',iconBg:'#fdf3d6',iconColor:'#9a7414',hi:false,deltaStyle:this.badge('slow')},
+      {label:'Negative Stock Lines',n:14,fmt:'int',delta:'SKUs',note:'requires correction',icon:'alert-circle-outline',iconBg:'#fbe3e0',iconColor:'#b53229',hi:false,deltaStyle:this.badge('negative')},
+      {label:'Discontinued in Stock',n:63,fmt:'int',delta:'$420K',note:'SKUs to clear',icon:'ban-outline',iconBg:'#eef1ec',iconColor:'#6f776f',hi:false,deltaStyle:this.badge('excess')},
+    ].map(k=>({...k,value:this.fmtNum(k.n,k.fmt,p),card:this.kpiCard(k.hi)}));
+
+    const healthRaw=[
+      {label:'Healthy',v:68,pct:'68%',value:'$6.6M',color:'#8ccb9d'},
+      {label:'Slow-Moving',v:18,pct:'18%',value:'$1.8M',color:'#d9ee85'},
+      {label:'Excess',v:9,pct:'9%',value:'$0.9M',color:'#f0c96b'},
+      {label:'Dead Stock',v:5,pct:'5%',value:'$0.4M',color:'#e0a3a3'},
+    ];
+    const hhi=s.healthHover;
+    let hcum=0;
+    const healthSegs=healthRaw.map((h,i)=>{ const mid=hcum+h.v/2; hcum+=h.v; return {...h, w:h.v+'%', mid:mid.toFixed(1)+'%', op:(hhi==null?1:(hhi===i?1:0.32)), onEnter:()=>this.setState({healthHover:i}), onLeave:()=>this.setState({healthHover:null})}; });
+    const healthTipShow=hhi!=null, healthTipLeft=hhi!=null?healthSegs[hhi].mid:'50%', healthTipText=hhi!=null?(healthRaw[hhi].label+' · '+healthRaw[hhi].pct+' · '+healthRaw[hhi].value):'';
+
+    const invWhBars=this.bars([
+      {label:'Stuttgart DC',v:2.8,value:'$2.8M',color:'#cdee6b'},
+      {label:'Milan Hub',v:2.3,value:'$2.3M',color:'#a9d64f'},
+      {label:'Detroit DC',v:2.0,value:'$2.0M',color:'#8ccb9d'},
+      {label:'Shanghai DC',v:1.6,value:'$1.6M',color:'#a3d7b3'},
+      {label:'Dubai Hub',v:1.0,value:'$1.0M',color:'#bfe3cf'},
+    ]);
+    const invAlerts=[
+      {icon:'−',title:'Negative on-hand balances',sub:'Sales booked before receipts',count:'14',bg:'#fbe3e0',color:'#b53229'},
+      {icon:'!',title:'Discontinued still in stock',sub:'No purchase orders since 2024',count:'63',bg:'#fdf3d6',color:'#9a7414'},
+      {icon:'⇧',title:'Excess vs 6-mo demand',sub:'On-hand > 2× forecast',count:'41',bg:'#eef7cf',color:'#5c7a15'},
+    ];
+
+    const _defAging=[
+      {sku:'CF-0089',name:'Forged Carbon Hood Panel',group:'Carbon Fiber',wh:'Stuttgart DC',onhand:'145 units',value:'$412K',days:'198',status:'Slow',kind:'slow'},
+      {sku:'LM-0142',name:'Nappa Leather Hide (Cognac)',group:'Leather & Upholstery',wh:'Milan Hub',onhand:'320 hides',value:'$286K',days:'214',status:'Slow',kind:'slow'},
+      {sku:'AL-2210',name:'Machined Alloy Blank 20"',group:'Alloy & Metals',wh:'Detroit DC',onhand:'980 units',value:'$196K',days:'176',status:'Slow',kind:'slow'},
+      {sku:'PC-0330',name:'Matte Clearcoat 20L',group:'Paint & Coatings',wh:'Dubai Hub',onhand:'540 drums',value:'$121K',days:'233',status:'Slow',kind:'slow'},
+      {sku:'WV-0453',name:'Burl Walnut Trim Set',group:'Wood Veneer',wh:'Milan Hub',onhand:'210 kits',value:'$84K',days:'402',status:'Dead',kind:'dead'},
+      {sku:'FT-0910',name:'Vintage Chrome Trim Strip',group:'Fasteners & Trim',wh:'Detroit DC',onhand:'4,200 pcs',value:'$38K',days:'511',status:'Dead',kind:'dead'},
+      {sku:'GL-0771',name:'Curved Side Glass (Tinted)',group:'Glass & Optics',wh:'Shanghai DC',onhand:'−18 units',value:'−$3.2K',days:'12',status:'Negative',kind:'negative'},
+    ];
+    const agingAll=(s.appliedRows&&s.appliedRows.length)?s.appliedRows:_defAging;
+    let _ar=agingAll;
+    if(s.invGroup!=='All Groups') _ar=_ar.filter(r=>r.group===s.invGroup);
+    if(s.invWarehouse&&s.invWarehouse!=='All Warehouses') _ar=_ar.filter(r=>r.wh===s.invWarehouse);
+    if(s.invStatus&&s.invStatus!=='All Status') _ar=_ar.filter(r=>r.status===s.invStatus);
+    const agingRows=_ar.map(r=>({...r,badge:this.badge(r.kind)}));
+
+    // ----- data quality -----
+    const dqKpis=[
+      {label:'Records Audited',n:48210,fmt:'comma',note:'across master + txn tables',icon:'server-outline',iconBg:'#eef7cf',iconColor:'#4a6b1f',hi:true},
+      {label:'Issue Categories',n:7,fmt:'int',note:'active rule violations',icon:'warning-outline',iconBg:'#fdf3d6',iconColor:'#9a7414',hi:false},
+      {label:'Records Flagged',n:275,fmt:'int',note:'0.57% of audited',icon:'flag-outline',iconBg:'#fbe3e0',iconColor:'#b53229',hi:false},
+      {label:'Auto-Fixable',n:118,fmt:'int',note:'43% via rules engine',icon:'flash-outline',iconBg:'#e5f2ea',iconColor:'#2f7d43',hi:false},
+    ].map(k=>({...k,value:this.fmtNum(k.n,k.fmt,p),card:this.kpiCard(k.hi)}));
+
+    const dqAll=[
+      {issue:'Negative on-hand quantity',area:'Inventory',count:'14',severity:'High',sev:'high',rule:'on_hand >= 0',status:'Open',st:'open'},
+      {issue:'Missing / zero unit cost',area:'Costing',count:'41',severity:'High',sev:'high',rule:'unit_cost > 0 before valuation',status:'Open',st:'open'},
+      {issue:'Sales without stock movement',area:'Transactions',count:'27',severity:'High',sev:'high',rule:'sale ⇒ matching stock-issue',status:'Open',st:'open'},
+      {issue:'Discontinued SKUs with stock > 0',area:'Master Data',count:'63',severity:'Medium',sev:'medium',rule:"status='Disc' ⇒ move to clearance",status:'In Review',st:'review'},
+      {issue:'Duplicate SKU codes',area:'Master Data',count:'9',severity:'Medium',sev:'medium',rule:'SKU must be globally unique',status:'In Progress',st:'progress'},
+      {issue:'UoM mismatch (order vs stock)',area:'Master Data',count:'33',severity:'Medium',sev:'medium',rule:'standardize base UoM per SKU',status:'Open',st:'open'},
+      {issue:"Stale last-sold >365d, still 'Active'",area:'Lifecycle',count:'88',severity:'Low',sev:'low',rule:'reclassify if no sale in 12mo',status:'Monitoring',st:'monitor'},
+    ];
+    let _dr=dqAll;
+    if(s.dqSeverity!=='All Severity') _dr=_dr.filter(r=>r.severity===s.dqSeverity);
+    if(s.dqArea&&s.dqArea!=='All Areas') _dr=_dr.filter(r=>r.area===s.dqArea);
+    if(s.dqStatus&&s.dqStatus!=='All Status') _dr=_dr.filter(r=>r.status===s.dqStatus);
+    const dqRows=_dr.map(r=>({...r,sevStyle:this.badge(r.sev),statusStyle:this.badge(r.st)}));
+
+    const sevBars=this.bars([
+      {label:'High',v:82,value:'82',color:'#e0a3a3'},
+      {label:'Medium',v:105,value:'105',color:'#f0c96b'},
+      {label:'Low',v:88,value:'88',color:'#8ccb9d'},
+    ]);
+    const checklist=[
+      {check:'Perpetual vs physical variance',target:'≤ 0.5%',result:'0.31%',res:'pass'},
+      {check:'GL value vs WMS value',target:'± $1K',result:'+$3.4K',res:'warn'},
+      {check:'Negative balances cleared',target:'0 lines',result:'14 lines',res:'fail'},
+      {check:'Orphan transactions reconciled',target:'0',result:'27',res:'fail'},
+      {check:'Cost coverage (SKUs w/ cost)',target:'100%',result:'99.1%',res:'warn'},
+      {check:'Cycle-count completion',target:'≥ 95%',result:'97.2%',res:'pass'},
+    ].map(c=>{
+      const m={pass:['#2f7d43','✓'],warn:['#c99a12','!'],fail:['#c0453f','✕']};
+      const col={pass:D?'#7fd39a':'#2f7d43',warn:D?'#e6c766':'#c99a12',fail:D?'#e59a95':'#c0453f'};
+      return {...c,mark:m[c.res][0],glyph:m[c.res][1],color:col[c.res]};
+    });
+
+    const okPill = D
+      ? 'background:rgba(47,125,67,.20);color:#7fd39a;font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px'
+      : 'background:#e7f6ec;color:#2f7d43;font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px';
+
+    const _bh=s.barHover;
+    const AH=(list,g)=>list.map((b,i)=>({...b, op:(_bh&&_bh.g===g)?(_bh.i===i?1:0.3):1, onEnter:()=>this.setState({barHover:{g,i}}), onLeave:()=>this.setState({barHover:null})}));
+    const M=s.isMobile, _open=(s.sidebarOpen!==false);
+    const asideStyle = M
+      ? `position:fixed;top:0;left:0;height:100vh;width:262px;z-index:50;background:var(--card);border-right:1px solid var(--side-brd);overflow-y:auto;transition:transform .38s cubic-bezier(.4,0,.2,1);transform:translateX(${_open?'0':'-100%'});box-shadow:${_open?'0 20px 60px rgba(0,0,0,.35)':'none'}`
+      : `flex-shrink:0;overflow:hidden;border-right:1px solid var(--side-brd);transition:width .38s cubic-bezier(.4,0,.2,1);width:${_open?'236px':'0px'}`;
+    const asideInner = M
+      ? 'width:262px;padding:22px 16px;display:flex;flex-direction:column;gap:6px'
+      : `width:236px;padding:22px 16px;display:flex;flex-direction:column;gap:6px;transition:transform .38s cubic-bezier(.4,0,.2,1),opacity .3s ease;transform:translateX(${_open?'0':'-24px'});opacity:${_open?'1':'0'}`;
+    const showBackdrop = M && _open;
+    const appStyle = M
+      ? 'display:block;background:var(--card);min-height:100vh;width:100%'
+      : 'display:flex;background:var(--card);border-radius:26px;overflow:hidden;box-shadow:0 24px 60px -30px rgba(0,0,0,.35);min-height:calc(100vh - 36px);min-width:1180px;max-width:1480px;width:100%;margin:0 auto';
+    const kpiGrid = M?'repeat(2,minmax(0,1fr))':'repeat(4,minmax(0,1fr))';
+    const col2a = M?'1fr':'minmax(0,1fr) 320px';
+    const col2b = M?'1fr':'minmax(0,1fr) minmax(0,1fr)';
+    const col2dq = M?'1fr':'minmax(0,1fr) 340px';
+    const headPad = M?'16px 16px 10px':'22px 28px 14px';
+    const mainPad = M?'10px 14px 22px':'8px 28px 28px';
+    const searchWrap = M?'margin-left:auto;display:flex;align-items:center;justify-content:center;background:var(--soft);border-radius:11px;width:40px;height:38px;overflow:hidden;flex-shrink:0':'margin-left:auto;display:flex;align-items:center;background:var(--soft);border-radius:12px;padding:9px 14px;gap:9px;width:280px';
+    const profileText = M?'display:none':'line-height:1.2';
+    const titleSize = M?'19px':'23px';
+    const uploadHeaders=s.uploadHeaders||[];
+    const previewRows=(s.uploadRows||[]).slice(0,8).map(r=>uploadHeaders.map(h=>String(r[h])));
+    const hasUpload=!!(s.uploadRows&&s.uploadRows.length);
+    const [title,crumb]=titles[s.screen];
+
+    return {
+      shellStyle, dark:D, light:!D, toggleTheme:()=>this.toggleTheme(),
+      uploadOpen:!!s.uploadOpen, openUpload:()=>this.setState({uploadOpen:true}), closeUpload:()=>this.setState({uploadOpen:false}), stop:(e)=>e.stopPropagation(),
+      onFile:(e)=>this.onFile(e), applyUpload:()=>this.applyUpload(),
+      uploadHeaders, previewRows, hasUpload, uploadName:s.uploadName||'', uploadCount:s.uploadCount||0,
+      asideStyle, asideInner, showBackdrop, appStyle, kpiGrid, col2a, col2b, col2dq, headPad, mainPad, searchWrap, profileText, titleSize,
+      toggleSidebar:()=>this.setState(v=>({sidebarOpen:!(v.sidebarOpen!==false)})),
+      pageTitle:title, crumb,
+      execNav:this.navStyle(s.screen==='exec'), invNav:this.navStyle(s.screen==='inv'), dqNav:this.navStyle(s.screen==='dq'),
+      goExec:()=>{this.setState({screen:'exec'});this.startCount();}, goInv:()=>{this.setState({screen:'inv'});this.startCount();}, goDq:()=>{this.setState({screen:'dq'});this.startCount();},
+      decoNav:[{label:'Orders'},{label:'Purchase Orders',badge:'4'},{label:'Warehouses'},{label:'Suppliers'},{label:'Settings'}],
+      isExec:s.screen==='exec', isInv:s.screen==='inv', isDq:s.screen==='dq',
+      execKpis, salesRange:s.salesRange, onSalesRange:e=>this.setState({salesRange:e.target.value}),
+      region:s.region||'All Regions', onRegion:e=>this.setState({region:e.target.value}),
+      rankMetric:s.rankMetric||'Revenue', onRankMetric:e=>this.setState({rankMetric:e.target.value}),
+      ...line, ...marker, linePoints, lineVis:(s.lineHover!=null?'1':'0'), whBars:AH(whBars,'wh'), donutSegs, donutTop, donutBottom,
+      gaugeText:this.fmtNum(103.5,'pct',p),
+      gaugeDash:`${(103.5/120*226.2).toFixed(1)} 999`, okPill,
+      rankTitle:isTop?'Top 5 Products':'Bottom 5 Products',
+      topTab:`padding:5px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;`+(isTop?'background:var(--accent);color:#1c2420':'color:var(--muted)'),
+      botTab:`padding:5px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;`+(!isTop?'background:var(--accent);color:#1c2420':'color:var(--muted)'),
+      setTop:()=>this.setState({topMode:'top'}), setBottom:()=>this.setState({topMode:'bottom'}), rankList:AH(rankList,'rank'),
+      invKpis, healthSegs, healthTipShow, healthTipLeft, healthTipText, invWhBars:AH(invWhBars,'invwh'), invAlerts, agingRows,
+      invGroup:s.invGroup, onInvGroup:e=>this.setState({invGroup:e.target.value}),
+      invWarehouse:s.invWarehouse||'All Warehouses', onInvWarehouse:e=>this.setState({invWarehouse:e.target.value}),
+      invStatus:s.invStatus||'All Status', onInvStatus:e=>this.setState({invStatus:e.target.value}),
+      dqKpis, dqRows, sevBars:AH(sevBars,'sev'), checklist,
+      dqSeverity:s.dqSeverity, onDqSeverity:e=>this.setState({dqSeverity:e.target.value}),
+      dqArea:s.dqArea||'All Areas', onDqArea:e=>this.setState({dqArea:e.target.value}),
+      dqStatus:s.dqStatus||'All Status', onDqStatus:e=>this.setState({dqStatus:e.target.value}),
+    };
+  }
+}
+</script>
+</body>
+</html>

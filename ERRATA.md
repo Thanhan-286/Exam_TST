@@ -154,6 +154,19 @@ nằm ngoài phạm vi phát biểu của nó**, nếu không nó sẽ báo sai 
 
 ---
 
+## E7 — Ba con số "trang trí" trong docs không tái lập được với dữ liệu SẠCH
+*(phát hiện 10/07/2026 khi viết golden tests cho webui)*
+
+| Docs ghi | Tính lại từ mart | Nguồn gốc con số cũ |
+|---|---|---|
+| Return Rate **2,24%** | **2,03%** (mẫu số = Completed+Open đã sạch, đúng công thức model-spec §4.1) | 2,24% = Return ÷ Completed **TRƯỚC làm sạch** (4.674,9tr + dòng trùng 11,9tr + sentinel 135tr = 4.821,9tr → 2,235%) |
+| "**5**/11 vấn đề tự tìm" | Bảng audit chỉ có **4** dòng `in_hint = false` | Vấn đề thứ 5 là #12 (63 dòng PV) — cố ý nằm NGOÀI bảng audit vì thuộc tầng Quy trình (§6.2) |
+| "**65,7%** dòng có vùng khách ≠ vùng kho" | **66,7%** (300/450 dòng sạch) · 66,8% (302/452 nguyên trạng) | Chưa truy được cách tính gốc; mức "≈ 2/3" không đổi |
+
+Không cái nào ảnh hưởng KPI chính. Webui dùng giá trị tính lại (2,03% · 4 · động).
+
+---
+
 ## Tác động lên các artifact khác
 
 | File | Cần sửa |

@@ -1,0 +1,34 @@
+{
+  "name": "RetailIQ Green",
+  "dataColors": [
+    "#5F7D1F", "#7FAE3E", "#A9CF6B", "#CDEA52",
+    "#D7ECB0", "#8BB02F", "#E6B45A", "#B6BFB0"
+  ],
+  "good": "#3F9A5A",
+  "neutral": "#E6B45A",
+  "bad": "#D96A6A",
+  "maximum": "#5F7D1F",
+  "center": "#C9D98A",
+  "minimum": "#D96A6A",
+  "null": "#8A938B",
+  "background": "#FFFFFF",
+  "secondaryBackground": "#EEF7DC",
+  "foreground": "#1B201B",
+  "tableAccent": "#7FAE3E",
+  "textClasses": {
+    "title":    { "fontFace": "Segoe UI", "fontSize": 14, "color": "#1B201B" },
+    "header":   { "fontFace": "Segoe UI Semibold", "fontSize": 11, "color": "#4A544A" },
+    "callout":  { "fontFace": "Segoe UI", "fontSize": 26, "color": "#1B201B" },
+    "label":    { "fontFace": "Segoe UI", "fontSize": 10, "color": "#8A938B" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } } }],
+        "border":     [{ "show": true, "color": { "solid": { "color": "#E7ECE3" } }, "radius": 10 }],
+        "visualHeader": [{ "show": false }],
+        "title": [{ "show": false }]
+      }
+    }
+  }
+}

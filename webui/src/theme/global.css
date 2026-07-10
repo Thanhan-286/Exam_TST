@@ -1,0 +1,22 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link, #5c7a15); text-decoration: none; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { background: var(--card-brd, #d6ddd6); border-radius: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+select { font-family: inherit; }
+body * {
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+    color 0.35s ease, fill 0.35s ease, stroke 0.35s ease;
+}
+@keyframes lux-slide { from { opacity: 0; transform: translateX(34px); } to { opacity: 1; transform: none; } }
+@keyframes lux-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes lux-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes lux-gauge { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
+@keyframes lux-pop { 0% { opacity: 0; transform: scale(0.72); } 60% { opacity: 1; transform: scale(1.04); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes lux-fadein { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lux-spin { to { transform: rotate(360deg); } }

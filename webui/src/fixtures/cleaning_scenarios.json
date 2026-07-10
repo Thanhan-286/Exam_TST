@@ -1,0 +1,1 @@
+[{"scenario_order":1,"scenario":"Làm sạch ĐÚNG","revenue_net":5208670650,"bias_pct":0,"is_correct":true},{"scenario_order":2,"scenario":"KHÔNG làm sạch gì","revenue_net":5355626650,"bias_pct":2.82,"is_correct":false},{"scenario_order":3,"scenario":"Dedupe máy móc theo OrderNo+LineNo","revenue_net":4915616000,"bias_pct":-5.63,"is_correct":false}]
