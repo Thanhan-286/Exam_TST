@@ -9,9 +9,12 @@ import { createClient } from '@supabase/supabase-js';
 function clean(v: string | undefined): string {
   if (!v) return '';
   let s = v.trim();
+  // Bỏ tiền tố "NAME =" nếu lỡ dán cả tên biến vào ô Value
   const withName = s.match(/^[A-Za-z_][A-Za-z0-9_]*\s*=\s*([\s\S]*)$/);
   if (withName) s = withName[1].trim();
-  return s.replace(/^["']|["']$/g, '').trim();
+  s = s.replace(/^["']|["']$/g, '').trim();
+  // Chỉ lấy token đầu tiên — chống lỗi dán nhiều dòng/nhiều biến vào một ô
+  return s.split(/\s+/)[0] ?? '';
 }
 
 const url = clean(import.meta.env.VITE_SUPABASE_URL as string);
